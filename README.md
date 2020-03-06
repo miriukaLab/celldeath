@@ -1,33 +1,29 @@
-# celldeath
+<a href="url"><img src="./img.png" align="right" height="250" width="250" ></a>
 
-![alt t](/appveyor/build/:user/:repo)
+## **celldeath**
 
-A simple python script based on deep learning for classifying cell death in cell culture. 
+### *A simple python script based on deep learning for classifying cell death in cell culture*
 
----
-## Getting Started
 
-CellDeath is a simple deep learning script that trains light transmitted microscopy
+
+## Getting Started 
+ 
+CellDeath is a simple deep learning script that trains with light transmitted microscopy
 images and then predict if those images contains cells undergoing cell death/apoptosis.
 
 Subcommands are:
 
-    slice: 
-            Only needed to run once, and only if you need to slice your images. 
+> **slice** | Only needed to run once, and only if you need to slice your images. 
 
-    train: 
-            Core option for training the neural network. 
+> **train** | Core subcommand for training the neural network. 
     
-    predict: 
-            Option for prediction. One or more images are given and yields prediction about if 
-            those cells are undergoing cell death.  
+> **predict** | One or more images are given and it returns if those cells are undergoing cell death.  
 
-We provide a pretrained model. You can run your images with it, although results are unknown. We suggest
-to train your model with your own images. 
+We provide a pretrained model. You can predict your images with it, although results are far to be far to be accurate, unless you have taken images as we did: 10x objective, images sliced in four, final shape 360x480 pixels, and may be, have used any of the cell lines we used.  So, we suggest to train your model with your own images. 
 
 ### Prerequisites
 
-Please note that for training a deep learning model, you need a GPU.  
+Please note that for training a deep learning model, you need a GPU and a lot of images.   
 
 ### Installing
 
@@ -40,7 +36,7 @@ $ pip install celldeath
 ### Dependencies
 
 
-* fastai 1.0-1.4
+* fastai 1.4
 * image-slicer 
 * PIL
 
@@ -51,7 +47,7 @@ celldeath has three subcommands (*train*, *predict* and *slice*), each one with 
  
 ### train
 
-You can train your own images with train. Be aware that you may need a few hunddresds of images at least for propoer training. With the subcommand *slice* you can split your images in n tiles, and hence increase your training performance. The subcommand already has most of the option set up for a decent training, and so you can provide a minimal input (just the path where your images are stored) to get a high accuracy, providing that your images and your experiement are reasonable.
+celldeath allows you to train your own images without too much knowledge of deep learning. Be aware that you may need a few hundreds of images at least for proper training. However, with the subcommand *slice* you can split your images in n tiles (usually 4), and hence increase your training performance. The subcommand *train* already has most of the option set up for a decent training, and so you can provide a minimal input (just the path where your images are stored) to get a high accuracy, providing that your images and your experiement are reasonable.
 
 A few recommendations: 
 * get as many images as possible.
@@ -66,28 +62,37 @@ A few recommendations:
 
 #### train options
 
-You can train your own images own images with this poption. Briefly, you should take light transmitted pictures of at least two conditions (control and cell death). Be aware that the more information you feed to the algorythm, the better the ability to train and predict. So, we advise that you should take at least 500 pictures in different biological replicate. Then you can slice them, and use data augmentation to increase you input.  
+You can train your own images own images with this poption. Briefly, you should take light transmitted pictures of at least two conditions (control and cell death). Be aware that the more information you feed to the algorythm, the better the ability to train and predict. So, we advise that you should take at least 500 pictures in different biological replicate. Then you can slice them, and use data augmentation to increase you input. 
 
-example (defaults are shown)
+For image labelling, you ***must*** include in your image filenames either the string '***control***' or the string '***celldeath***'. 
+
+minimal example 
+```
+$ python main.py train -pretrained
+```
+with this mininmal example, you just need to provide the path to your images. Defaults will probably take you to a high accuracy. The -pretrained option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
+
+extended example (defaults are shown)
 
 ```
-$ python main.py train -indir ~/split_img -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.01 -pretrained 
+$ python main.py train -indir ~/split_img -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.1 -pretrained 
 ```
+Short explanations about these options are given below. Some of them may have a huge imact in your training; we suggest you to try small changes in each one of them in order to get your bets trained model. 
 
-command | name | help
----   | ---|  ---
--h, --help |  |   show this help message and exit
--indir  | path|  Folder where images are stored. Beaware that default is with splitted images and so default is /split_img
--model  | CNN | Model used for training. Default is ResNet50. Models availbe are resnet34, resnet50, resnet101, and densenet121.
--valid_pct | validation percentage|  Validation percentage. Default is 0.2
--l_lr | lower learning rate limit|Lower Limit for learning rate.
--u_lr | upper learning rate limit| Upper limit for learning rate.
--aug  | augmentation  |Add image augmentation. Default False
--epochs |epochs | Number of epochs. Default is 30.
--bs | batch size| Batch Size
--dropout | dropout | Drop out to be applied.
--wd |Weight decay | Default is 0.1
--pretrained | Pretraining |Define if train using Imganet pretrained weights. Default is False.
+command | help |suggestion
+---   |  --- | ---
+-h, --help |  show this help message and exit
+-indir  |  Folder where images are stored. Beaware that default is with splitted images and so default is /split_img
+-model   | Model used for training. Default is ResNet50. Models availbe are resnet34, resnet50, resnet101, and densenet121. | Give a change to deeper models, although it will take longer to train.
+-valid_pct |   Validation percentage. Default is 0.2
+-l_lr | Lower Limit for learning rate. | You may try 1e-5 or even 1e-6
+-u_lr |  Upper limit for learning rate. | 
+-aug  |Add image augmentation. Default False | Always try it. 
+-epochs  | Number of epochs. Default is 30. | Longer training may be beneficial if pretrained is false.
+-bs |  Batch Size | Depends on your GPU.
+-dropout |  Drop out to be applied. | Try 0.4, or even 0.3
+-wd | Default is 0.1 | Try 0.01
+-pretrained | Define if train using Imganet pretrained weights. Default is False.
 
 #### predict options 
 
@@ -126,9 +131,9 @@ command | help
 
 ## Authors
 
-* **Santiago Miriuka** - [GitHub](https://github.com/sgmiriuka)  [twitter](https://twitter.com/santiagomiriuka)
-* **Alejandro La Greca** 
-* **Nelba Pérez**
+* **Santiago Miriuka** - <sgmiriuka@gmail.com> | [GitHub](https://github.com/sgmiriuka) | [twitter](https://twitter.com/santiagomiriuka)
+* **Alejandro La Greca** <ale.lagreca@gmail.com>
+* **Nelba Pérez** <nelbap@hotmail.com>
 
 ## License
 
@@ -137,4 +142,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 * Meli and Shei. 
-* the fastai group
+* the fastai team. you make us possible. 
+
