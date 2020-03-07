@@ -17,6 +17,7 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, p
     ImageFile.LOAD_TRUNCATED_IMAGES = True
     fnames = get_image_files(path_img)
     pat = r'.*(CPT|DMSO).*'
+    #pat = r'.*(control|celldeath).*'
     tfms = get_transforms(do_flip=True, flip_vert=True, max_lighting=0.1, max_warp=0.)
     data = ImageDataBunch.from_name_re(path_img, 
                                     fnames, 

@@ -59,7 +59,7 @@ to train your model with your own images.
     
     parser_b = subparser.add_parser('train')
     parser_b.add_argument('-indir', 
-                            default='~/apoptosis/split_img/', metavar='PATH',
+                            default=path+'/celldeath/split_img/', metavar='PATH',
                             help='Folder where images are stored. Beaware that default is with splitted images and so default is /split_img')
     parser_b.add_argument('-model', dest='model', action='store', default='resnet50',
                             choices=['resnet34', 'resnet50', 'resnet101', 'densenet121'],
