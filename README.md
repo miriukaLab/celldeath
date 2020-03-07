@@ -2,8 +2,7 @@
 # **celldeath**
 
 A simple python script based on deep learning optimized for classifying cell death in a simple microscopy image
-
-<a href="url"><img src="./img.png" align="right" height="200" width="200" ></a>
+<img src="./img.png" align="right" height="200" width="200" >
 
 ## Getting Started
 
@@ -50,7 +49,7 @@ A few recommendations:
 * get as many images as possible.
 * try both pretrained (imagenet) and not pretrained. Pretrainng is not necessary better.  
 * try augmentation. We set up a minimal augmentation (flip and rotation, minimal changes in light) since too many arguments for this results in a lower performance.  
-* batch size (-bs) will depend on you GPU. A decent RAM (11Gb) should accept a batch size of 32-64, depending on the size of your images.  
+* batch size (-bs) will depend on you GPU and the size of your images.  
 * Always try weight decay.
 * try many epochs, particularly if you are not using a pretrained network. It may take 40-50 epochs to get a full training.  
 
