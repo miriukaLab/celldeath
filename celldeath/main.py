@@ -6,9 +6,11 @@ import textwrap
 from slicer import slice_img
 from train import trainer
 from predict import predictor
+from utils import create_folder
 import os
 
 def slice():
+    create_folder(args.outdir_slicing)
     slice_img(args.indir_slicing, args.outdir_slicing, args.n_tiles)
 
 def train():
@@ -20,9 +22,8 @@ def predict():
 
 
 if __name__ == '__main__':
-    formatter = lambda prog: argparse.HelpFormatter(prog,max_help_position=15, width=100)
-    path = os.path.expanduser('~user')
-
+    #formatter = lambda prog: argparse.HelpFormatter(prog,max_help_position=15, width=100)
+    #path = os.path.expanduser('~user')
     parser = argparse.ArgumentParser(prog='celldeath', 
             formatter_class=argparse.RawTextHelpFormatter,
             description=textwrap.dedent('''
@@ -48,18 +49,15 @@ to train your model with your own images.
     
     parser_a = subparser.add_parser('slice')
     parser_a.add_argument('-indir_slicing', dest='indir_slicing', metavar='PATH',
-                            default=path+'/celldeath/img/',
                             help='Folder where images are stored.')
-    parser_a.add_argument('-outdir_slicing', dest='outdir_slicing', metavar='PATH',
-                            default='~/celldeath/split_img', 
+    parser_a.add_argument('-outdir_slicing', dest='outdir_slicing', metavar='PATH', 
                             help='Folder where slice images are saved. Default is ~/celldeath/split_img')    
     parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
                             help='Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.')
     
     parser_b = subparser.add_parser('train')
-    parser_b.add_argument('-indir', 
-                            default=path+'/celldeath/split_img/', metavar='PATH',
+    parser_b.add_argument('-indir', metavar='PATH',
                             help='Folder where images are stored. Beaware that default is with splitted images and so default is /split_img')
     parser_b.add_argument('-model', dest='model', action='store', default='resnet50',
                             choices=['resnet34', 'resnet50', 'resnet101', 'densenet121'],

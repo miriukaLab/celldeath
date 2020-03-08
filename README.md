@@ -126,7 +126,7 @@ command | help
 ---   |   ---
 -h, --help   |   show this help message and exit
 -indir_slicing |   Folder where images are stored.
--outdir_slicing |   Folder where slice images are saved. Default is ~/celldeath/split_img
+-outdir_slicing |   Folder where slice images are saved.
 -n_tiles | Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.
 
 ## Version
