@@ -9,7 +9,7 @@ from predict import predictor
 import os
 
 def slice():
-    slice_img(args.num_tiles, args.indir, args.outdir)
+    slice_img(args.indir_slicing, args.outdir_slicing, args.n_tiles)
 
 def train():
     trainer(args.indir, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
@@ -53,7 +53,7 @@ to train your model with your own images.
     parser_a.add_argument('-outdir_slicing', dest='outdir_slicing', metavar='PATH',
                             default='~/celldeath/split_img', 
                             help='Folder where slice images are saved. Default is ~/celldeath/split_img')    
-    parser_a.add_argument('-n_tiles', dest='num_tiles', metavar='INT',
+    parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
                             help='Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.')
     
@@ -98,6 +98,7 @@ to train your model with your own images.
     args = parser.parse_args()
 
     if args.command == 'slice':
+        print('\n')
         print('Original images will be slice in n tiles and stored in a separate folder.')
         print('\n')
         slice()

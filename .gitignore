@@ -1,9 +1,11 @@
 #mine's
 
 #.vscode
-apoptosisFastai.ipynb
-pred_folder/
-trained_model/
+~/celldeath/celldeath/apoptosisFastai.ipynb
+~/celldeath/celldeath/pred_folder/
+~/celldeath/celldeath/trained_model/
+~/celldeath/img_split
+~/celldeath/celldeath/img
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -7,7 +7,9 @@ A simple python script based on deep learning optimized for classifying cell dea
 ## Getting Started
 
 celldeath is a simple deep learning script that trains with light transmitted microscopy
-images and then predict if those images contains cells undergoing cell death/apoptosis.
+images and then predict if those images contains cells undergoing cell death/apoptosis. 
+
+We aimed to keep it simple, so anyone can apply it with minimal deep learning knowledge.
 
 Subcommands are:
 
@@ -32,9 +34,9 @@ pip install celldeath
 
 ### Dependencies
 
+* python >3.6
 * fastai 1.4
 * image-slicer 0.3.0
-* PIL 1.1.6
 
 ## Usage
 
@@ -65,7 +67,7 @@ minimal example
 python main.py train -pretrained
 ```
 
-with this mininmal example, you just need to provide the path to your images. Defaults will probably take you to a high accuracy. The -pretrained option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
+with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The -pretrained option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
 
 extended example (defaults are shown)
 
