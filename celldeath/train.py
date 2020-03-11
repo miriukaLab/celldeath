@@ -13,13 +13,13 @@ from utils import create_folder
 
 
 def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, pretrained):
-    path_img = '/home/smiriuka/celldeath/celldeath/1hSliced'
+    #path_img = '/home/smiriuka/celldeath/celldeath/1hSliced'
     ImageFile.LOAD_TRUNCATED_IMAGES = True
-    fnames = get_image_files(path_img)
+    fnames = get_image_files(indir)
     pat = r'.*(CPT|DMSO).*'
     #pat = r'.*(control|celldeath).*'
     tfms = get_transforms(do_flip=True, flip_vert=True, max_lighting=0.1, max_warp=0.)
-    data = ImageDataBunch.from_name_re(path_img, 
+    data = ImageDataBunch.from_name_re(indir, 
                                     fnames, 
                                     pat,
                                     ds_tfms=tfms, 
@@ -72,6 +72,7 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, p
             learn = cnn_learner(data, models.densenet121, ps=dropout, metrics=accuracy)
         learn.fit_one_cycle(1, 1e-2)
         learn.unfreeze()
+        learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd)
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd)
         #learn.fit_one_cycle(epochs, max_lr=slice(1e-4,1e-3), wd=0.1)
         timestr = time.strftime("%Y%m%d-%H%M%S")

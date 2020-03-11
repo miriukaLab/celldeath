@@ -64,8 +64,10 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_b.add_argument('-valid_pct', dest='valid_pct', type=float, 
                             help='Validation percentage. Default is 0.2')
     parser_b.add_argument('-l_lr', dest='l_lr', type=float, metavar='FLOAT',
+                            default=1e-4,
                             help='Lower Limit for learning rate.')
     parser_b.add_argument('-u_lr', dest='u_lr', type=float, metavar='INT',
+                            default=1e-3,
                             help='Upper limit for learning rate.')
     parser_b.add_argument('-aug', dest='aug', action='store_true',
                             help='Add image augmentation. Default False')

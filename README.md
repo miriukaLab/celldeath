@@ -66,7 +66,7 @@ For image labelling, you ***must*** include in your image filenames either the s
 python main.py train -pretrained
 ```
 
-with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The -pretrained option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
+with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
 
 ##### extended example (defaults are shown)
 
@@ -121,6 +121,9 @@ If you run a series of images, you will get the accuracy for thhe whloe set.
 
 Your training and prediction will improve with the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image.
 
+
+Your training and prediction will improve with the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image.
+
 ##### example
 
 ```bash
@@ -145,6 +148,10 @@ command | help
 * **Santiago Miriuka** | <sgmiriuka@gmail.com> | [GitHub](https://github.com/sgmiriuka) | [twitter](https://twitter.com/santiagomiriuka)
 * **Alejandro La Greca** | <ale.lagreca@gmail.com>
 * **Nelba Pérez** | <nelbap@hotmail.com>
+
+## Reference
+
+Please cite celldeath as XXX
 
 ## Reference
 
