@@ -6,6 +6,8 @@
 ~/celldeath/celldeath/trained_model/
 ~/celldeath/img_split
 ~/celldeath/celldeath/img
+~/celldeath/celldeath/1hSliced/*.png
+~/celldeath/celldeath/1hSliced/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -18,7 +18,7 @@ def train():
             args.epochs, args.bs, args.dropout, args.wd, args.pretrained)
 
 def predict():
-    predictor(args.path_pred, args.pretrained)
+    predictor(args.path_pred, args.example)
 
 
 if __name__ == '__main__':
@@ -42,8 +42,7 @@ Subcommands are:
             Option for prediction. One or more images are given and yields prediction about if 
             those cells are undergoing cell death.  
 
-We provide a pretrained model. You can run your images with it, although results are unknown. We suggest
-to train your model with your own images. 
+We provide a pretrained model as an example. You can run your images with it, although prediction will be innacurate. For high accuracy, train your model with your own images. 
 '''))
     subparser = parser.add_subparsers(title='commands', dest='command')
     
@@ -80,7 +79,7 @@ to train your model with your own images.
                             help='Drop out to be applied.')
     parser_b.add_argument('-wd', dest='wd', type=float, metavar='FLOAT',
                             default=0.1, 
-                            help='Weight decay. Default is 0.1')                               
+                            help='Weight decay. Default is 0.01')                               
     parser_b.add_argument('-pretrained',dest='pretrained', 
                             action='store_true', 
                             help='Define if train using Imganet pretrained weights. Default is False.')
@@ -89,9 +88,9 @@ to train your model with your own images.
     parser_c.add_argument('-path_pred',  dest ='path_pred',  
                             metavar='PATH',
                             help='Path where image/s to predict are stored.')
-    parser_c.add_argument('-pretrained', dest='pretrained',  
+    parser_c.add_argument('-example', dest='example',  
                             action='store_true', 
-                            help='Use pretrained model. If used, you should have had trained with your images before).')
+                            help='Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training.')
 
     args = parser.parse_args()
 

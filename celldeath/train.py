@@ -13,7 +13,7 @@ from utils import create_folder
 
 
 def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, pretrained):
-    path_img = '/home/smiriuka/apoptosis/celldeath/1hSliced'
+    path_img = '/home/smiriuka/celldeath/celldeath/1hSliced'
     ImageFile.LOAD_TRUNCATED_IMAGES = True
     fnames = get_image_files(path_img)
     pat = r'.*(CPT|DMSO).*'
