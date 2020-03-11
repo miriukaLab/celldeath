@@ -30,11 +30,4 @@ def slice_img(indir_slicing, outdir_slicing, n_tiles):
                 image_slicer.save_tiles(tiles, directory=outdir_slicing, prefix=file) 
 
 
-def crop_img(args):
-    pass
-
-def check_size(args):
-    for filename in os.listdir(path):
-        print(filename.shape)
-
 

@@ -15,7 +15,7 @@ def slice():
 
 def train():
     trainer(args.indir, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
-            args.epochs, args.bs, args.dropout, args.wd, args.pretrained)
+            args.epochs, args.bs, args.dropout, args.wd, args.imagenet)
 
 def predict():
     predictor(args.path_pred, args.example)
@@ -23,7 +23,7 @@ def predict():
 
 if __name__ == '__main__':
     #formatter = lambda prog: argparse.HelpFormatter(prog,max_help_position=15, width=100)
-    #path = os.path.expanduser('~user')
+    path = os.path.expanduser('~user')+'celldeath/'
     parser = argparse.ArgumentParser(prog='celldeath', 
             formatter_class=argparse.RawTextHelpFormatter,
             description=textwrap.dedent('''
@@ -50,6 +50,7 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_a.add_argument('-indir_slicing', dest='indir_slicing', metavar='PATH',
                             help='Folder where images are stored.')
     parser_a.add_argument('-outdir_slicing', dest='outdir_slicing', metavar='PATH', 
+                            default=path+'img_split',
                             help='Folder where slice images are saved. Default is ~/celldeath/split_img')    
     parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
@@ -57,6 +58,7 @@ We provide a pretrained model as an example. You can run your images with it, al
     
     parser_b = subparser.add_parser('train')
     parser_b.add_argument('-indir', metavar='PATH',
+                            default=path+'celldeath/img_split'
                             help='Folder where images are stored. Beaware that default is with splitted images and so default is /split_img')
     parser_b.add_argument('-model', dest='model', action='store', default='resnet50',
                             choices=['resnet34', 'resnet50', 'resnet101', 'densenet121'],
@@ -72,8 +74,8 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_b.add_argument('-aug', dest='aug', action='store_true',
                             help='Add image augmentation. Default False')
     parser_b.add_argument('-epochs', dest='epochs', metavar='INT',
-                            type=int, default=30, 
-                            help='Number of epochs. Default is 30. ')
+                            type=int, default=50, 
+                            help='Number of epochs. Default is 50. ')
     parser_b.add_argument('-bs', dest='bs', metavar='INT',
                             default=16, type=int,  
                             help='Batch Size')
@@ -82,7 +84,7 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_b.add_argument('-wd', dest='wd', type=float, metavar='FLOAT',
                             default=0.1, 
                             help='Weight decay. Default is 0.01')                               
-    parser_b.add_argument('-pretrained',dest='pretrained', 
+    parser_b.add_argument('-imagenet',dest='imagenet', 
                             action='store_true', 
                             help='Define if train using Imganet pretrained weights. Default is False.')
 

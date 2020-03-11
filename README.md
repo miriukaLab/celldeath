@@ -76,7 +76,7 @@ python main.py train -indir ~/split_img -model resnet50 -valid_pc 0.2 -l_lr 1e-4
 
 ##### train options
 
-Short explanations about these options are given below. Some of them may have a huge imact in your training; we suggest you to try small changes in each one of them in order to get your bets trained model.  
+Short explanations about these options are given below. Some of them may have a huge impact in your training; we suggest you to try small changes in each one of them in order to get your bets trained model.  
 
 command | help |suggestion
 ---   |  --- | ---
@@ -84,14 +84,14 @@ command | help |suggestion
 -indir  |  Folder where images are stored. Beaware that default is with splitted images and so default is /split_img
 -model   | Model used for training. Default is ResNet50. Models availbe are resnet34, resnet50, resnet101, and densenet121. | Give a change to deeper models, although it will take longer to train.
 -valid_pct |   Validation percentage. Default is 0.2
--l_lr | Lower Limit for learning rate. | You may try 1e-5 or even 1e-6
--u_lr |  Upper limit for learning rate. |  
+-l_lr | Lower Limit for learning rate. Default is 1e-4 | You may try 1e-5 or even 1e-6
+-u_lr |  Upper limit for learning rate. Default is 1e-3|  
 -aug  |Add image augmentation. Default False | Always try it.  
--epochs  | Number of epochs. Default is 30. | Longer training may be beneficial if pretrained is false.
--bs |  Batch Size | Depends on your GPU.
--dropout |  Drop out to be applied. | Try 0.4, or even 0.3
--wd | Default is 0.1 | Try 0.01
--pretrained | Define if train using Imganet pretrained weights. Default is False.
+-epochs  | Number of epochs. Default is 50. | Longer training may be beneficial if pretrained is false.
+-bs |  Batch Size | Depends on your GPU. Default is 16. 
+-dropout |  Drop out to be applied. | Try 0.6-0.25
+-wd | Default is 0.01 | Try 0.1 or 0.001
+-imagenet | Define if train using Imganet pretrained weights. Default is False.
 
 After training, you'll get a short report with accuracy, precision and recall, as well as confusion matrix values.  
 
