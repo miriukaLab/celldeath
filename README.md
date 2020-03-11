@@ -115,7 +115,7 @@ command | help
 -path_pred |  Path where image/s to predict are stored.
 -example   |   Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training (see ref).  
 
-If you run a series of images, you will get the accuracy for that set.
+If you run a series of images, you will get the accuracy for thhe whloe set.
 
 #### slice subcommand
 
