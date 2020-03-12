@@ -15,6 +15,8 @@ from utils import create_folder
 
 def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder):
     #path_img = '/home/smiriuka/celldeath/celldeath/1hSliced'
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    home_dir= os.path.expanduser('~user')
     ImageFile.LOAD_TRUNCATED_IMAGES = True
     fnames = get_image_files(indir)
     pat = r'.*(CPT|DMSO).*'
@@ -39,10 +41,13 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         elif model == 'densenet121':
             learn = cnn_learner(data, models.densenet121, ps=dropout, metrics=accuracy)
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
-                            callbacks=[SaveModelCallback(learn, every='improvement', 
-                                        monitor='accuracy', name='best')])
-        timestr = time.strftime("%Y%m%d-%H%M%S")
-        home_dir= os.path.expanduser('~user')
+                            callbacks=[ SaveModelCallback(learn, every='improvement', 
+                                            monitor='accuracy', name='best'),
+                                        CSVLogger(learn, filename='history'+timestr),
+                                        TrackerCallback(learn, monitor=['valid_acc','valid_loss']),
+                                        LearnerTensorboardWriter(learn, base_dir=tboard_path, name='run'+timestr)
+                                        ]
+                            )
         #path = home_dir+'/apoptosis/celldeath/'+'cell_death_training_'+timestr
         learn.save('cell_death_training_'+timestr)
         learn.export()
@@ -95,7 +100,7 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         learn.unfreeze()
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
                             callbacks=[SaveModelCallback(learn, every='improvement', 
-                                        monitor='accuracy', name='best')]))
+                                        monitor='accuracy', name='best')])
         timestr = time.strftime("%Y%m%d-%H%M%S")
         learn.save('cell_death_training_'+timestr)
         learn.export()
@@ -118,9 +123,9 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         print('\n')
         if predict == True: 
             predictor(predict_folder, example == False)
-         f = open(home_dir+'/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
+        f = open(home_dir+'/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n'/
-                'indir {}, model {}, valid_pct {}, l_lr {}, u_lr {}, aug {}, epochs {}, bs {}, dropout {}, wd {}, imagenet {}, predict {}, predict_folder {}'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder
+                'indir {}, model {}, valid_pct {}, l_lr {}, u_lr {}, aug {}, epochs {}, bs {}, dropout {}, wd {}, imagenet {}, predict {}, predict_folder {}'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder),
                 'Final Training Results'/
                 '\n'/
                 'Accuracy:\t {:0.4f}'.format(accu) /

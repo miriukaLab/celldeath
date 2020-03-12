@@ -39,7 +39,26 @@ pip install celldeath
 
 ## Usage
 
-celldeath has three subcommands (*train*, *predict* and *slice*), each one with their options.
+celldeath has three subcommands (*train*, *predict* and *slice*), each one with their options (see below). However, for a simple use, you can follow these next steps. They are optimized for early cell death recognition in transmitted light microscopy images. 
+
+### simple use
+
+First, in command line type
+
+```bash
+python main.py slice -indir_slicing img/path/here
+```
+
+and then type
+
+```bash
+python main.py train -imagenet
+```
+
+Default values in both cases will lead to a high accuracy.
+
+
+## Subcommands
 
 ### train
 
@@ -48,7 +67,7 @@ celldeath allows you to train your own images without too much knowledge of deep
 A few recommendations:  
 
 * get as many images as possible.
-* try both pretrained (imagenet) and not pretrained. Pretrainng may be faster, but it is not necessary better though (yes, no cells in imagenet).  
+* try both pretrained (-imagenet) and not pretrained. Pretrainng may be faster, but it is not necessary better though (yes, no cells in imagenet).  
 * try augmentation. We set up a minimal augmentation (flip and rotation, minimal changes in light) since too many arguments for this results in a lower performance.  
 * batch size (-bs) will depend on you GPU and the size of your images.  
 * Always try weight decay. We set it up to 0.01, but also try 0.1.  
@@ -63,7 +82,7 @@ For image labelling, you ***must*** include in your image filenames either the s
 ##### minimal example  
 
 ```bash
-python main.py train -pretrained
+python main.py train -imagenet
 ```
 
 with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
@@ -71,7 +90,7 @@ with this mininmal example, you just need to put your images in the folder *'~/c
 ##### extended example (defaults are shown)
 
 ```bash
-python main.py train -indir ~/split_img -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.1 -pretrained
+python main.py train -indir ~/split_img -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.1 -imagenet - predict - predict_path
 ```
 
 ##### train options

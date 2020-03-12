@@ -57,7 +57,7 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
                             help='Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.')
-    parser_a.add_argument('-test', dest='test', action=='store_true', 
+    parser_a.add_argument('-test', dest='test', action='store_true', 
                             help='Create a random separate set of images for testing. Default is False.')
     parser_a.add_argument('-test_path', dest='test_path', 
                             default='img_split_test', 
@@ -109,7 +109,7 @@ We provide a pretrained model as an example. You can run your images with it, al
                             help='Path where image/s to predict are stored.')
     parser_c.add_argument('-example', dest='example',  
                             action='store_true', 
-                            default=path+'celldeath/img_split_predict'
+                            default=path+'celldeath/img_split_predict',
                             help='Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training.')
 
     args = parser.parse_args()
