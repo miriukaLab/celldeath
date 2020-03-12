@@ -92,6 +92,8 @@ command | help |suggestion
 -dropout |  Drop out to be applied. | Try 0.6-0.25
 -wd | Default is 0.01 | Try 0.1 or 0.001
 -imagenet | Define if train using Imganet pretrained weights. Default is False.
+-predict | Option for predict images immediately after training. Default is False.
+-predict_path | Path where images for prediction are located. Default is 'celldeath/img_split_test'.
 
 After training, you'll get a short report with accuracy, precision and recall, as well as confusion matrix values.  
 
@@ -113,7 +115,8 @@ command | help
 ---   |   ---
 -h, --help   |   show this help message and exit
 -path_pred |  Path where image/s to predict are stored.
--example   |   Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training (see ref).  
+-example   |   Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training (see ref).
+
 
 If you run a series of images, you will get the accuracy for thhe whloe set.
 
@@ -127,7 +130,7 @@ Your training and prediction will improve with the number of images that you hav
 ##### example
 
 ```bash
-python main.py slice -indir_slicing img/path/here -outdir_slicing img/path/here -n_tiles 4
+python main.py slice -indir_slicing img/path/here -outdir_slicing your_path/img_split_train -n_tiles 4 -test -test_path your_path/img_split_test -perc_test 0.2
 ```
 
 ##### slice options
@@ -136,8 +139,11 @@ command | help
 ---   |   ---
 -h, --help   |   show this help message and exit
 -indir_slicing |   Folder where images are stored.
--outdir_slicing |   Folder where slice images are saved.
+-train_path |   Path where slice images are saved.
 -n_tiles | Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.
+-test | Create a random separate set of images for testing. Default is False.
+-test_path | Path where images for testing will be stored. Default is img_split_test.
+-perc_test | Percentage of iamges that will be used for testing. Default is 0.2.
 
 ## Version
 

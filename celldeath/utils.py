@@ -2,14 +2,27 @@
 
 
 import os
-
+import shutil
+import numpy as np
 
 
 
 def create_folder(folder):
+    '''
+    Create a folder.
+    '''
     #home_dir= os.path.expanduser('~user') 
     if not os.path.exists(folder):
         os.makedirs(folder)
+
+def move_files(fromdir, todir, perc_files):
+    '''
+    Move a defined percentage of files. 
+    '''
+    files = os.listdir(fromdir)
+    for f in files:
+        if np.random.rand(1) < perc_files:
+            shutil.move(fromdir+'/'+ f, todir+'/'+f)        
 
 
 def crop_img(args):

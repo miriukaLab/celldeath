@@ -12,7 +12,7 @@ from utils import create_folder
     
 
 
-def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet):
+def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder):
     #path_img = '/home/smiriuka/celldeath/celldeath/1hSliced'
     ImageFile.LOAD_TRUNCATED_IMAGES = True
     fnames = get_image_files(indir)
@@ -60,6 +60,8 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         print('False Negatives:\t {}'.format(cm[1,0]))
         print('True Negatives:\t\t {}'.format(cm[1,1]))
         print('\n')
+        if predict = True: 
+            predictor(predict_folder)
     else:
         data.normalize(imagenet_stats)
         if model == 'resnet50':
@@ -95,6 +97,8 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         print('False Negatives:\t {}'.format(cm[1,0]))
         print('True Negatives:\t\t {}'.format(cm[1,1]))
         print('\n')
+        if predict = True: 
+            predictor(predict_folder)
     
 
     #interp = ClassificationInterpretation.from_learner(learn)

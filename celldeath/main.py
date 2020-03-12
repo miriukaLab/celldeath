@@ -6,16 +6,18 @@ import textwrap
 from slicer import slice_img
 from train import trainer
 from predict import predictor
-from utils import create_folder
+from utils import create_folder, move_files
 import os
 
 def slice():
-    create_folder(args.outdir_slicing)
-    slice_img(args.indir_slicing, args.outdir_slicing, args.n_tiles)
+    create_folder(args.test_path)
+    slice_img(args.indir_slicing, args.test_path, args.n_tiles, 
+                args.test, args.test_path, args.perc_test)
 
 def train():
     trainer(args.indir, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
-            args.epochs, args.bs, args.dropout, args.wd, args.imagenet)
+            args.epochs, args.bs, args.dropout, args.wd, args.imagenet, 
+            args.predict, args.predict_path)
 
 def predict():
     predictor(args.path_pred, args.example)
@@ -49,16 +51,25 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_a = subparser.add_parser('slice')
     parser_a.add_argument('-indir_slicing', dest='indir_slicing', metavar='PATH',
                             help='Folder where images are stored.')
-    parser_a.add_argument('-outdir_slicing', dest='outdir_slicing', metavar='PATH', 
+    parser_a.add_argument('-train_path', dest='train_path', metavar='PATH', 
                             default=path+'img_split',
                             help='Folder where slice images are saved. Default is ~/celldeath/split_img')    
     parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
                             help='Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.')
+    parser_a.add_argument('-test', dest='test', action=='store_true', 
+                            help='Create a random separate set of images for testing. Default is False.')
+    parser_a.add_argument('-test_path', dest='test_path', 
+                            default='img_split_test', 
+                            help='Path where images for testing will be stored. Default is img_split_test.')
+    parser_a.add_argument('-perc_test', dest='perc_test', type=float, 
+                            default=0.2, 
+                            help='Percentage of iamges that will be used for testing. Default is 0.2.')
+                
     
     parser_b = subparser.add_parser('train')
     parser_b.add_argument('-indir', metavar='PATH',
-                            default=path+'celldeath/img_split'
+                            default=path+'celldeath/img_split_train',
                             help='Folder where images are stored. Beaware that default is with splitted images and so default is /split_img')
     parser_b.add_argument('-model', dest='model', action='store', default='resnet50',
                             choices=['resnet34', 'resnet50', 'resnet101', 'densenet121'],
@@ -86,7 +97,11 @@ We provide a pretrained model as an example. You can run your images with it, al
                             help='Weight decay. Default is 0.01')                               
     parser_b.add_argument('-imagenet',dest='imagenet', 
                             action='store_true', 
-                            help='Define if train using Imganet pretrained weights. Default is False.')
+                            help='Option for training using Imganet pretrained weights. Default is False.')
+    parser.add_argument('-predict', dest='predict', action='store_true', 
+                            help='Option for predict images immediately after training. Default is False.')
+    parser.add_argument('-predict_path', dest='predict_path',
+                            help='Path where images for prediction are located.')
 
     parser_c = subparser.add_parser('predict')
     parser_c.add_argument('-path_pred',  dest ='path_pred',  
@@ -94,6 +109,7 @@ We provide a pretrained model as an example. You can run your images with it, al
                             help='Path where image/s to predict are stored.')
     parser_c.add_argument('-example', dest='example',  
                             action='store_true', 
+                            default=path+'celldeath/img_split_predict'
                             help='Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training.')
 
     args = parser.parse_args()
@@ -103,10 +119,14 @@ We provide a pretrained model as an example. You can run your images with it, al
         print('Original images will be slice in n tiles and stored in a separate folder.')
         print('\n')
         slice()
+        if args.test == True:
+            move_files(args.outdir_slicing, args.test_path, args.perc_files)
         print('Done.')
 
     elif args.command == 'train':
         train()
+        if args.predict == True:
+            predict(args.predict_path)
 
     elif args.command == 'predict':
         predict() 
