@@ -16,13 +16,12 @@ def newest(path):
     return max(paths, key=os.path.getctime)
 
 
-def predictor(path_pred, pretrained):
+def predictor(path_pred, example):
     if example == True:
         count_true = 0
         count_false = 0
         learn = load_learner('/home/smiriuka/celldeath/celldeath/1hSliced/') # path to pretrained (by us) model 
         for filename in os.listdir(path_pred):
-            whatis = []
             img = open_image(path_pred+'/'+filename) 
             #if img.shape != ([3, 480, 640]):
              #   print('Image is not of the same size than those used for training!!')

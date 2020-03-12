@@ -8,6 +8,7 @@ from fastai.metrics import error_rate
 from PIL import ImageFile
 import os
 import time
+from predict import predictor
 from utils import create_folder
     
 
@@ -37,9 +38,11 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
             learn = cnn_learner(data, models.resnet101, ps=dropout, metrics=accuracy)
         elif model == 'densenet121':
             learn = cnn_learner(data, models.densenet121, ps=dropout, metrics=accuracy)
-        learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd)
+        learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
+                            callbacks=[SaveModelCallback(learn, every='improvement', 
+                                        monitor='accuracy', name='best')])
         timestr = time.strftime("%Y%m%d-%H%M%S")
-        #home_dir= os.path.expanduser('~user')
+        home_dir= os.path.expanduser('~user')
         #path = home_dir+'/apoptosis/celldeath/'+'cell_death_training_'+timestr
         learn.save('cell_death_training_'+timestr)
         learn.export()
@@ -60,8 +63,24 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         print('False Negatives:\t {}'.format(cm[1,0]))
         print('True Negatives:\t\t {}'.format(cm[1,1]))
         print('\n')
-        if predict = True: 
-            predictor(predict_folder)
+        if predict == True: 
+            predictor(predict_folder, example == False)
+        f = open(home_dir+'/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
+        f.write('Training parameters:\n',
+                'indir {}, model {}, valid_pct {}, l_lr {}, u_lr {}, aug {}, epochs {}, bs {}, dropout {}, wd {}, imagenet {}, predict {}, predict_folder {}'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder),
+                'Final Training Results',
+                '\n',
+                'Accuracy:\t {:0.4f}\n'.format(accu),
+                'Precision:\t {:0.4f}\n'.format(pre),
+                'Recall:\t\t {:0.4f}\n'.format(rec),
+                '\n',
+                'True Positives:\t\t {}\n'.format(cm[0,0]),
+                'False Positives:\t {}\n'.format(cm[0,1]),
+                'False Negatives:\t {}\n'.format(cm[1,0]),
+                'True Negatives:\t\t {}\n'.format(cm[1,1]))
+        if predict == True:
+            f.write('Accuracy on the test set:\t {}\n'.format(count_true/(count_true+count_false)))
+        f.close()
     else:
         data.normalize(imagenet_stats)
         if model == 'resnet50':
@@ -74,9 +93,9 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
             learn = cnn_learner(data, models.densenet121, ps=dropout, metrics=accuracy)
         learn.fit_one_cycle(1, 1e-2)
         learn.unfreeze()
-        learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd)
-        learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd)
-        #learn.fit_one_cycle(epochs, max_lr=slice(1e-4,1e-3), wd=0.1)
+        learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
+                            callbacks=[SaveModelCallback(learn, every='improvement', 
+                                        monitor='accuracy', name='best')]))
         timestr = time.strftime("%Y%m%d-%H%M%S")
         learn.save('cell_death_training_'+timestr)
         learn.export()
@@ -97,13 +116,23 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         print('False Negatives:\t {}'.format(cm[1,0]))
         print('True Negatives:\t\t {}'.format(cm[1,1]))
         print('\n')
-        if predict = True: 
-            predictor(predict_folder)
-    
-
-    #interp = ClassificationInterpretation.from_learner(learn)
-    #learn.fit_one_cycle(8)
-    #learn.unfreeze()
-    #learn.fit_one_cycle(40, max_lr=slice(1e-4,1e-3))
+        if predict == True: 
+            predictor(predict_folder, example == False)
+         f = open(home_dir+'/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
+        f.write('Training parameters:\n'/
+                'indir {}, model {}, valid_pct {}, l_lr {}, u_lr {}, aug {}, epochs {}, bs {}, dropout {}, wd {}, imagenet {}, predict {}, predict_folder {}'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder
+                'Final Training Results'/
+                '\n'/
+                'Accuracy:\t {:0.4f}'.format(accu) /
+                'Precision:\t {:0.4f}'.format(pre)/
+                'Recall:\t\t {:0.4f}'.format(rec)/
+                '\n'/
+                'True Positives:\t\t {}'.format(cm[0,0])/
+                'False Positives:\t {}'.format(cm[0,1])/
+                'False Negatives:\t {}'.format(cm[1,0])/
+                'True Negatives:\t\t {}'.format(cm[1,1]), '\n')
+        if predict == True:
+            f.write('Accuracy on the test set:\t {}\n'.format(count_true/(count_true+count_false)))
+        f.close()
 
 
