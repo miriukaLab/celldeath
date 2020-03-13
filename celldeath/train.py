@@ -5,6 +5,8 @@
 from fastai.vision import *
 from fastai.callbacks import *
 from fastai.metrics import error_rate
+from fastai.callbacks import *
+from fastai.callbacks.tensorboard import *
 from PIL import ImageFile
 import os
 import time
@@ -44,10 +46,10 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
                             callbacks=[ SaveModelCallback(learn, every='improvement', 
                                             monitor='accuracy', name='best'),
                                         CSVLogger(learn, filename='history'+timestr),
-                                        TrackerCallback(learn, monitor=['valid_acc','valid_loss']),
-                                        LearnerTensorboardWriter(learn, base_dir=tboard_path, name='run'+timestr)
+                                        TrackerCallback(learn, monitor=['valid_acc','valid_loss'])
                                         ]
                             )
+        learn.callback_fns.append(partial(LearnerTensorboardWriter(learn, name='run'+timestr)))
         #path = home_dir+'/apoptosis/celldeath/'+'cell_death_training_'+timestr
         learn.save('cell_death_training_'+timestr)
         learn.export()
@@ -98,9 +100,18 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
             learn = cnn_learner(data, models.densenet121, ps=dropout, metrics=accuracy)
         learn.fit_one_cycle(1, 1e-2)
         learn.unfreeze()
+        project_id = 'projct1'
+        tboard_path = Path('celldeath/tensorboard/' + project_id)
+        #tensorboard --logdir=tboard_path --port=6006
+        #os.system('python -m tensorflow.tensorboard --logdir=' + 'celldeath/tensorboard/')
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
-                            callbacks=[SaveModelCallback(learn, every='improvement', 
-                                        monitor='accuracy', name='best')])
+                            callbacks=[ SaveModelCallback(learn, every='improvement', 
+                                            monitor='accuracy', name='best'),
+                                        CSVLogger(learn, filename='history'+timestr),
+                                        #TrackerCallback(learn),
+                                        #LearnerTensorboardWriter(learn, base_dir=tboard_path, name='run')
+                                        ]
+                            )
         timestr = time.strftime("%Y%m%d-%H%M%S")
         learn.save('cell_death_training_'+timestr)
         learn.export()
@@ -122,22 +133,19 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
         print('True Negatives:\t\t {}'.format(cm[1,1]))
         print('\n')
         if predict == True: 
-            predictor(predict_folder, example == False)
-        f = open(home_dir+'/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
-        f.write('Training parameters:\n'/
-                'indir {}, model {}, valid_pct {}, l_lr {}, u_lr {}, aug {}, epochs {}, bs {}, dropout {}, wd {}, imagenet {}, predict {}, predict_folder {}'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder),
-                'Final Training Results'/
-                '\n'/
-                'Accuracy:\t {:0.4f}'.format(accu) /
-                'Precision:\t {:0.4f}'.format(pre)/
-                'Recall:\t\t {:0.4f}'.format(rec)/
-                '\n'/
-                'True Positives:\t\t {}'.format(cm[0,0])/
-                'False Positives:\t {}'.format(cm[0,1])/
-                'False Negatives:\t {}'.format(cm[1,0])/
-                'True Negatives:\t\t {}'.format(cm[1,1]), '\n')
-        if predict == True:
-            f.write('Accuracy on the test set:\t {}\n'.format(count_true/(count_true+count_false)))
+            predictor(predict_folder)
+        f = open('/home/smiriuka/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
+        f.write('Training parameters:\n\n')
+        f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n predict: {}\n predict_folder: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, predict, predict_folder))
+        f.write('\nFinal Training Results\n\n')
+        f.write('Accuracy:\t\t {:0.4f}\n'.format(accu))
+        f.write('Precision:\t {:0.4f}\n'.format(pre))
+        f.write('Recall:\t\t {:0.4f}\n'.format(rec))
+        f.write('True Positives:\t\t {}\n'.format(cm[0,0]))
+        f.write('False Positives:\t\t {}\n'.format(cm[0,1]))
+        f.write('False Negatives:\t\t {}\n'.format(cm[1,0]))
+        f.write('True Negatives:\t\t {}\n'.format(cm[1,1]))
+        f.write('\nAccuracy on the test set:\t {}\n'.format(accu))
         f.close()
 
 

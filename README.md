@@ -36,6 +36,8 @@ pip install celldeath
 
 * fastai 1.4
 * image-slicer 0.3.0
+* tensorboard 1.0.0
+* tensorboardx-2.0
 
 ## Usage
 
@@ -52,7 +54,7 @@ python main.py slice -indir_slicing img/path/here
 and then type
 
 ```bash
-python main.py train -imagenet
+python main.py train -imagenet -predict
 ```
 
 Default values in both cases will lead to a high accuracy.

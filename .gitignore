@@ -146,3 +146,7 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
+celldeath/__pycache__/predict.cpython-37.pyc
+celldeath/__pycache__/slicer.cpython-37.pyc
+celldeath/__pycache__/train.cpython-37.pyc
+celldeath/__pycache__/utils.cpython-37.pyc
