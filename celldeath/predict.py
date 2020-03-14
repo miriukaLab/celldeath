@@ -22,7 +22,8 @@ def predictor(path_pred):
     count_false = 0
     global accu
     accu = 0
-    learn = load_learner('/home/smiriuka/celldeath/celldeath/img_split_train') # path to pretrained (by us) model 
+    #learn = load_learner('/home/smiriuka/celldeath/celldeath/img_split_train') # path to pretrained (by us) model 
+    learn = load_learner('/DATA/sgm/apoptosis/1hr_train')
     for filename in os.listdir(path_pred):
         img = open_image(path_pred+'/'+filename) 
         #if img.shape != ([3, 480, 640]):

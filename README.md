@@ -6,19 +6,10 @@ A simple python script based on deep learning optimized for classifying cell dea
 
 ## Getting Started
 
-celldeath is a simple deep learning script that trains with light transmitted microscopy
-images and then predict if those images contains cells undergoing cell death/apoptosis. 
+celldeath is a deep learning script that trains with light transmitted microscopy
+images in order to predict cell death/apoptosis.
 
-We aimed to keep it simple, so anyone can apply it with minimal deep learning knowledge.
-
-Subcommands are:
-
-* **celldeath slice** | Only needed to run once, and only if you wish to slice your images.
-
-* **celldeath train** | Core subcommand for training the neural network.
-* **celldeath predict** | One or more images are given and it returns if those cells are undergoing cell death.  
-
-We provide an example pretrained model. You can predict your images with it, but results will be probably highly innacuratte.  So, we suggest to train your model with your own images. Parameters for training are already optimized, and will probably lead to a high accuracy. However, we provide some suggestions for fine tunning your training. 
+We aimed to keep it simple, so anyone can apply it with minimal deep learning knowledge. Parameters for training are already optimized, and will probably lead to a high accuracy. However, we provide some suggestions for fine tunning your training.
 
 ### Prerequisites
 
@@ -45,26 +36,33 @@ celldeath has three subcommands (*train*, *predict* and *slice*), each one with 
 
 ### simple use
 
-First, in command line type
+Put all your images in a folder called */img*, open your terminal and type (beaware that if you train several times with same images, this previous step has to be done just one time)
 
 ```bash
-python main.py slice -indir_slicing img/path/here
+python main.py slice
 ```
 
-and then type
+Then type
 
 ```bash
 python main.py train -imagenet -predict
 ```
 
-Default values in both cases will lead to a high accuracy.
+Default values will lead to a high accuracy in your set of images for prediction.
 
 
 ## Subcommands
 
+The next subcommands will give you some more control on preprocessing, training and prediction. Subcommands are:
+
+* **celldeath slice** | Only needed to run once, and only if you wish to slice your images.
+
+* **celldeath train** | Core subcommand for training the neural network.
+* **celldeath predict** | One or more images are given and it returns if those cells are undergoing cell death.  
+
 ### train
 
-celldeath allows you to train your own images without too much knowledge of deep learning. Be aware that you may need a few hundreds of images at least for proper training. However, with the subcommand *slice* you can split your images in n tiles (usually 4), and hence increase your training performance. The subcommand *train* already has most of the option set up for a decent training, and so you can provide a minimal input (just the path where your images are stored) to get a high accuracy, providing that your images and your experiement are reasonable.
+celldeath allows you to train your own images without too much knowledge of deep learning. Be aware that you need at least a few hundreds of images for proper training and prediction. However, with the subcommand *slice* you can split your images in n tiles (usually 4), and hence increase your training performance. The subcommand *train* already has most of the option set up for a decent training, and so you can provide a minimal input (just the path where your images are stored) to get a high accuracy, providing that your images and your experiement are reasonable.
 
 A few recommendations:  
 
@@ -87,7 +85,7 @@ For image labelling, you ***must*** include in your image filenames either the s
 python main.py train -imagenet
 ```
 
-with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it is not superior to a plain training, and even a little bit inferior.  
+with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it may not be superior to a plain training, and even a little bit inferior.  
 
 ##### extended example (defaults are shown)
 
@@ -113,16 +111,13 @@ command | help |suggestion
 -dropout |  Drop out to be applied. | Try 0.6-0.25
 -wd | Default is 0.01 | Try 0.1 or 0.001
 -imagenet | Define if train using Imganet pretrained weights. Default is False.
--predict | Option for predict images immediately after training. Default is False.
--predict_path | Path where images for prediction are located. Default is 'celldeath/img_split_test'.
+-test_path | Path where test images are located. Default is 'celldeath/img_split_test'.
 
-After training, you'll get a short report with accuracy, precision and recall, as well as confusion matrix values.  
+After training, a .txt file will be saved in the report folder with accuracy, precision and recall, as well as confusion matrix values. Also, a .csvfile will be saved with each of the the training loss and accuracy epochs values.  
 
 #### predict subcommand  
 
-If you have your own set of images you can try this subcommand (with the -pretrained option) and find out what the accuracy is on it. We provide a pretraind model, based on a training on 7 cell lines exposed to one drug for one hour.
-
-Beaware that chances of a good performance will depend on many variables, and eventually it may be useless. It is much better to train your network and then predict on subsecuent experiments (that is, without -pretrained option). In this case, this subcommand will lok for the last trained NN and predict based on it.  
+After training, you can predict the presence of cell death in a set of images by using the *predict* option. In this case, this subcommand will lok for the last trained NN and predict based on it.  
 
 ##### example  
 
@@ -136,17 +131,10 @@ command | help
 ---   |   ---
 -h, --help   |   show this help message and exit
 -path_pred |  Path where image/s to predict are stored.
--example   |   Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training (see ref).
-
-
-If you run a series of images, you will get the accuracy for thhe whloe set.
 
 #### slice subcommand
 
-Your training and prediction will improve with the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image.
-
-
-Your training and prediction will improve with the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image.
+Your training and prediction may improve the more the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image.
 
 ##### example
 
@@ -168,21 +156,13 @@ command | help
 
 ## Version
 
-1.0.0
+0.9.0
 
 ## Authors
 
 * **Santiago Miriuka** | <sgmiriuka@gmail.com> | [GitHub](https://github.com/sgmiriuka) | [twitter](https://twitter.com/santiagomiriuka)
 * **Alejandro La Greca** | <ale.lagreca@gmail.com>
 * **Nelba Pérez** | <nelbap@hotmail.com>
-
-## Reference
-
-Please cite celldeath as XXX
-
-## Reference
-
-Please cite celldeath as XXX
 
 ## Reference
 

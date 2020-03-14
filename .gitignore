@@ -8,8 +8,9 @@
 ~/celldeath/celldeath/img
 ~/celldeath/celldeath/img_prueba/*.png
 ~/celldeath/celldeath/img_prueba/
-~/celldeath/celldeath/img_split_test/
-~/celldeath/celldeath/img_split_train/
+~/celldeath/celldeath/img_split_test/*
+~/celldeath/celldeath/img_split_train/*
+~/celldeath/celldeath/reports/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -12,12 +12,12 @@ import os
 def slice():
     create_folder(args.test_path)
     slice_img(args.indir_slicing, args.train_path, args.n_tiles, 
-                args.test, args.test_path, args.perc_test)
+                args.test_path, args.perc_test)
 
 def train():
     trainer(args.indir, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
             args.epochs, args.bs, args.dropout, args.wd, args.imagenet, 
-            args.predict, args.predict_path)
+            args.test_path)
 
 def predict():
     predictor(args.path_pred)
@@ -50,6 +50,7 @@ We provide a pretrained model as an example. You can run your images with it, al
     
     parser_a = subparser.add_parser('slice')
     parser_a.add_argument('-indir_slicing', dest='indir_slicing', metavar='PATH',
+                            default='img',
                             help='Folder where images are stored.')
     parser_a.add_argument('-train_path', dest='train_path', metavar='PATH', 
                             default='img_split_train',
@@ -57,8 +58,8 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
                             help='Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.')
-    parser_a.add_argument('-test', dest='test', action='store_true', 
-                            help='Create a random separate set of images for testing. Default is False.')
+    #parser_a.add_argument('-test', dest='test', action='store_true', 
+   #                         help='Create a random separate set of images for testing. Default is False.')
     parser_a.add_argument('-test_path', dest='test_path', 
                             default='img_split_test', 
                             help='Path where images for testing will be stored. Default is img_split_test.')
@@ -94,16 +95,16 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_b.add_argument('-dropout', dest='dropout', type=float, default = 0.5,  
                             help='Drop out to be applied.')
     parser_b.add_argument('-wd', dest='wd', type=float, metavar='FLOAT',
-                            default=0.1, 
+                            default=0.01, 
                             help='Weight decay. Default is 0.01')                               
     parser_b.add_argument('-imagenet',dest='imagenet', 
                             action='store_true', 
                             help='Option for training using Imganet pretrained weights. Default is False.')
-    parser_b.add_argument('-predict', dest='predict', action='store_true', 
-                            help='Option for predict images immediately after training. Default is False.')
-    parser_b.add_argument('-predict_path', dest='predict_path',
+    #parser_b.add_argument('-predict', dest='predict', action='store_true', 
+    #                        help='Option for predict images immediately after training. Default is False.')
+    parser_b.add_argument('-test_path', dest='test_path',
                             default='img_split_test', 
-                            help='Path where images for prediction are located.')
+                            help='Path where images for testing are located.')
 
     parser_c = subparser.add_parser('predict')
     parser_c.add_argument('-path_pred',  dest ='path_pred',  
@@ -121,9 +122,10 @@ We provide a pretrained model as an example. You can run your images with it, al
         print('Original images will be slice in {} tiles and stored in a separate folder.'.format(args.n_tiles))
         print('\n')
         slice()
-        if args.test == True:
+        if args.test_path is not None:
             move_files(args.train_path, args.test_path, args.perc_test)
-        print('Done.')
+            print('{} of your images were randomly moved to a test folder'.format(args.perc_test))
+        print('\nDone.')
 
     elif args.command == 'train':
         train()
