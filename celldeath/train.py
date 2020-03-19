@@ -6,8 +6,6 @@ from fastai.vision import *
 from fastai.callbacks import *
 from fastai.metrics import error_rate
 from fastai.callbacks import *
-#from fastai.callbacks.tensorboard import *
-from PIL import ImageFile
 import os
 import time
 from predict import predictor
@@ -15,14 +13,11 @@ from utils import create_folder
 import matplotlib.pyplot as plt
     
 
-def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path):
-    #path_img = '/home/smiriuka/celldeath/celldeath/1hSliced'
+def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path):
     timestr = time.strftime("%Y%m%d-%H%M%S")  
     home_dir= os.path.expanduser('~user')
-    ImageFile.LOAD_TRUNCATED_IMAGES = True
     fnames = get_image_files(indir)
-    pat = r'.*(CPT|DMSO).*'
-    #pat = r'.*(control|celldeath).*'
+    pat = r'(?=('+'|'.join(labels)+r'))'
     tfms = get_transforms(do_flip=True, flip_vert=True, max_lighting=0.1, max_warp=0.)
     data = ImageDataBunch.from_name_re(indir, 
                                     fnames, 
@@ -46,11 +41,8 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
                             callbacks=[ SaveModelCallback(learn, every='improvement', 
                                             monitor='valid_loss', name='best'),
                                         CSVLogger(learn, filename='history'+timestr),
-                                        #TrackerCallback(learn, monitor=['valid_acc','valid_loss'])
                                         ]
                             )
-        #learn.callback_fns.append(partial(LearnerTensorboardWriter(learn, name='run'+timestr)))
-        #path = home_dir+'/apoptosis/celldeath/'+'cell_death_training_'+timestr
         learn.save('cell_death_training_'+timestr)
         learn.export()
         interp = ClassificationInterpretation.from_learner(learn)
@@ -103,16 +95,10 @@ def trainer(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, i
             learn = cnn_learner(data, models.densenet121, ps=dropout, metrics=accuracy)
         learn.fit_one_cycle(1, 1e-2)
         learn.unfreeze()
-        #project_id = 'projct1'
-        #tboard_path = Path('celldeath/tensorboard/' + project_id)
-        #tensorboard --logdir=tboard_path --port=6006
-        #os.system('python -m tensorflow.tensorboard --logdir=' + 'celldeath/tensorboard/')
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
                             callbacks=[SaveModelCallback(learn, every='improvement', 
                                             monitor='valid_loss', name='best'),
-                                        CSVLogger(learn, filename='history'+timestr),
-                                        #TrackerCallback(learn),
-                                        #LearnerTensorboardWriter(learn, base_dir=tboard_path, name='run')
+                                        CSVLogger(learn, filename='history'+timestr)
                                         ]
                             )
         timestr = time.strftime("%Y%m%d-%H%M%S")

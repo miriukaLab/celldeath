@@ -25,8 +25,9 @@ pip install celldeath
 
 ### Dependencies
 
-* fastai 1.4
+* fastai > 1.4
 * image-slicer 0.3.0
+* matplotlib > 3.1.1
 
 ## Usage
 
@@ -43,12 +44,12 @@ python main.py slice
 Then type
 
 ```bash
-python main.py train -imagenet -predict
+python main.py train -labels your_labels -imagenet -predict
 ```
 
-Default values will lead to a high accuracy in your set of images for prediction.
+You have to provide your labels, which must be included in the filename of each image. Default values are *control* and *celldeath*. 
 
-You can find a .txt file under the folder *reports* that includes all training parameters, results on teh validation image set, and accuracy on the test set.  
+Default values will lead to a high accuracy in your set of images for prediction. Once training is finished, you will find a .txt file under the folder *reports* that includes all training parameters, results on the validation image set, and accuracy on the test set.  
 
 
 ## Subcommands
@@ -77,12 +78,12 @@ A few recommendations:
 
 You can train your own images own images with this poption. Briefly, you should take light transmitted pictures of at least two conditions (control and cell death). Be aware that the more information you feed to the algorythm, the better the ability to train and predict. So, we advise that you should take at least 500 pictures in different biological replicate. Then you can slice them, and use data augmentation to increase you input.  
 
-For image labelling, you ***must*** include in your image filenames either the string '***control***' or the string '***celldeath***'.  
+For image labelling, you have to include in each of your image filenames either the string '*control*' or the string '*celldeath*'. You can change this with the argument -labels, or even include more catgories.   
 
 ##### minimal example  
 
 ```bash
-python main.py train -imagenet
+python main.py train -labels yourlabels -imagenet
 ```
 
 with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'*, and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes, in many cases not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it may not be superior to a plain training, and even a little bit inferior.  
@@ -90,7 +91,7 @@ with this mininmal example, you just need to put your images in the folder *'~/c
 ##### extended example (defaults are shown)
 
 ```bash
-python main.py train -indir ~/split_img -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.1 -imagenet - predict - predict_path
+python main.py train -indir /your/path/img -labels yourlabels -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.1 -imagenet - predict - predict_path
 ```
 
 ##### train options
@@ -101,6 +102,7 @@ command | help |suggestion
 ---   |  --- | ---
 -h, --help |  show this help message and exit
 -indir  |  Folder where images are stored. Beaware that default is with splitted images and so default is /split_img
+-labels | Give labels of each experimental condition. Labels should be written as in the filenames. Default values are '*control*' and '*celldeath*'.
 -model   | Model used for training. Default is ResNet50. Models availbe are resnet34, resnet50, resnet101, and densenet121. | Give a change to deeper models, although it will take longer to train.
 -valid_pct |   Validation percentage. Default is 0.2
 -l_lr | Lower Limit for learning rate. Default is 1e-4 | You may try 1e-5 or even 1e-6

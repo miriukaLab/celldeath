@@ -1,0 +1,27 @@
+Training parameters:
+
+ indir: /DATA/sgm/apoptosis/1hr_train
+ model: resnet50
+ valid_pct: 0.2
+ l_lr: 0.0001
+ u_lr: 0.001
+ aug: True
+ epochs: 1
+ bs: 16
+ dropout: 0.5
+ wd: 0.01
+ imagenet: True
+ test_path: /DATA/sgm/apoptosis/1hr_test/
+
+
+Final Training Results
+
+Accuracy:		 1.0000
+Precision:	 1.0000
+Recall:		 1.0000
+True Positives:		 153
+False Positives:		 0
+False Negatives:		 0
+True Negatives:		 155
+
+Accuracy on the test set:	 0.9410785619174434

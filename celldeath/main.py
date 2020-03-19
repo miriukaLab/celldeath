@@ -15,7 +15,7 @@ def slice():
                 args.test_path, args.perc_test)
 
 def train():
-    trainer(args.indir, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
+    trainer(args.indir, args.labels, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
             args.epochs, args.bs, args.dropout, args.wd, args.imagenet, 
             args.test_path)
 
@@ -24,7 +24,6 @@ def predict():
 
 
 if __name__ == '__main__':
-    #formatter = lambda prog: argparse.HelpFormatter(prog,max_help_position=15, width=100)
     path = os.path.expanduser('~user')+'celldeath/'
     parser = argparse.ArgumentParser(prog='celldeath', 
             formatter_class=argparse.RawTextHelpFormatter,
@@ -70,6 +69,9 @@ Subcommands are:
     parser_b.add_argument('-indir', metavar='PATH',
                             default='img_split_train',
                             help='Folder where images are stored. Beaware that default is with splitted images and so default is /split_img')
+    parser_b.add_argument('-labels', dest='labels', nargs='+', 
+                            default='control, celldeath',
+                            help='Give labels of each experimental condition. Labels should be written as in filename. Default: control, celldeath')
     parser_b.add_argument('-model', dest='model', action='store', default='resnet50',
                             choices=['resnet34', 'resnet50', 'resnet101', 'densenet121'],
                             help='Model used for training. Default is ResNet50..')
