@@ -1,3 +1,4 @@
 {
-     "python.pythonPath": "/home/smiriuka/miniconda3/envs/apoptosis/bin/python"
+     "python.pythonPath": "/home/smiriuka/miniconda3/envs/apoptosis/bin/python",
+     "python.terminal.activateEnvironment": false
 }
