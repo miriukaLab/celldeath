@@ -44,7 +44,7 @@ Subcommands are:
             Option for prediction. One or more images are given and yields prediction about if 
             those cells are undergoing cell death.  
 
-We provide a pretrained model as an example. You can run your images with it, although prediction will be innacurate. For high accuracy, train your model with your own images. 
+
 '''))
     subparser = parser.add_subparsers(title='commands', dest='command')
     
@@ -58,8 +58,6 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_a.add_argument('-n_tiles', dest='n_tiles', metavar='INT',
                             default=4, type=int, choices=[2,4,6,8],
                             help='Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.')
-    #parser_a.add_argument('-test', dest='test', action='store_true', 
-   #                         help='Create a random separate set of images for testing. Default is False.')
     parser_a.add_argument('-test_path', dest='test_path', 
                             default='img_split_test', 
                             help='Path where images for testing will be stored. Default is img_split_test.')
@@ -100,8 +98,6 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_b.add_argument('-imagenet',dest='imagenet', 
                             action='store_true', 
                             help='Option for training using Imganet pretrained weights. Default is False.')
-    #parser_b.add_argument('-predict', dest='predict', action='store_true', 
-    #                        help='Option for predict images immediately after training. Default is False.')
     parser_b.add_argument('-test_path', dest='test_path',
                             default='img_split_test', 
                             help='Path where images for testing are located.')
@@ -110,11 +106,7 @@ We provide a pretrained model as an example. You can run your images with it, al
     parser_c.add_argument('-path_pred',  dest ='path_pred',  
                             metavar='PATH',
                             help='Path where image/s to predict are stored.')
-    # parser_c.add_argument('-example', dest='example',  
-    #                        action='store_true', 
-    #                        default=path+'celldeath/img_split_predict',
-    #                        help='Use provided example pretrained model. Only used for demonstration purpose as results wil be higly innacurate unless your cell images are higly similar to the ones originally used for training.')
-
+    
     args = parser.parse_args()
 
     if args.command == 'slice':

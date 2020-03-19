@@ -27,8 +27,6 @@ pip install celldeath
 
 * fastai 1.4
 * image-slicer 0.3.0
-* tensorboard 1.0.0
-* tensorboardx-2.0
 
 ## Usage
 
@@ -49,6 +47,8 @@ python main.py train -imagenet -predict
 ```
 
 Default values will lead to a high accuracy in your set of images for prediction.
+
+You can find a .txt file under the folder *reports* that includes all training parameters, results on teh validation image set, and accuracy on the test set.  
 
 
 ## Subcommands
