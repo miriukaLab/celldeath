@@ -38,7 +38,7 @@ celldeath has three subcommands (*train*, *predict* and *slice*), each one with 
 
 ### simple use
 
-Open your terminal, point to teh celldeath folder and type (beaware that if you train several times with same images, this previous step has to be done just one time). Just provide the path to your image folder.
+Open your terminal, point to the celldeath folder and type (beaware that if you train several times with same images, this previous step has to be done just one time). Just provide the path to your image folder.
 
 ```bash
 python main.py slice -indir_slicing your/img/folder
