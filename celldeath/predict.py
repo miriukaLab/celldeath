@@ -12,15 +12,17 @@ def newest(path):
     return max(paths, key=os.path.getctime)
 
 
-def predictor(test_path):
+def predictor(path_pred):
     '''
     Predict on given images. 
+    Put your images in a folder calles 'predict', and this should be a subfolder 
+    of the indir folder used to train.  
     '''
     count_true = 0
     count_false = 0
-    learn = load_learner('/DATA/sgm/apoptosis/1hr_train')
-    for filename in os.listdir(test_path):
-        img = open_image(test_path+'/'+filename) 
+    learn = load_learner(path_pred)
+    for filename in os.listdir(path_pred+'/predict'):
+        img = open_image(path_pred+'/predict'+'/'+filename) 
         pred_class,pred_idx,outputs = learn.predict(img)
         if str(pred_class) in filename:
             prediction = 'True'
