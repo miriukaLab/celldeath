@@ -1,4 +1,7 @@
 
+
+DRAFT VERSION // WILL BE UPDATED SOON
+
 # **celldeath**
 
 A simple python script based on deep learning optimized for classifying cell death in simple transmitted light microscopy images
@@ -168,7 +171,7 @@ command | help
 
 ## Reference
 
-Please cite celldeath as XXX
+https://www.biorxiv.org/content/10.1101/2020.03.22.002253v1
 
 ## License
 
