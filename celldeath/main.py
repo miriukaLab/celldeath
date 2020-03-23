@@ -10,9 +10,14 @@ from utils import create_folder, move_files
 import os
 
 def slice():
-    create_folder(args.test_path)
+    create_folder(args.train_path)
     slice_img(args.indir_slicing, args.train_path, args.n_tiles, 
                 args.test_path, args.perc_test)
+    if args.perc_test is not None:
+        create_folder(args.test_path)
+        move_files(args.train_path, args.test_path, args.perc_test)
+        print('{} of your images were randomly moved to a test folder'.format(args.perc_test))
+    print('\nDone.')
 
 def train():
     trainer(args.indir, args.labels, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
@@ -61,7 +66,6 @@ Subcommands are:
                             default='img_split_test', 
                             help='Path where images for testing will be stored. Default is img_split_test.')
     parser_a.add_argument('-perc_test', dest='perc_test', type=float, 
-                            default=0.2, 
                             help='Percentage of iamges that will be used for testing. Default is 0.2.')
                 
     
@@ -116,10 +120,7 @@ Subcommands are:
         print('Original images will be slice in {} tiles and stored in a separate folder.'.format(args.n_tiles))
         print('\n')
         slice()
-        if args.test_path is not None:
-            move_files(args.train_path, args.test_path, args.perc_test)
-            print('{} of your images were randomly moved to a test folder'.format(args.perc_test))
-        print('\nDone.')
+        
 
     elif args.command == 'train':
         train()
