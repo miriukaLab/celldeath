@@ -161,7 +161,7 @@ command | help
 
 ## Version
 
-0.9.0
+0.9.1
 
 ## Authors
 
