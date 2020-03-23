@@ -1,6 +1,6 @@
 
 
-DRAFT VERSION // Finale version will be posted soon
+DRAFT VERSION // We are currently working, please be patient!
 
 # **celldeath**
 
@@ -28,9 +28,9 @@ pip install celldeath -t celldeath
 
 ### Dependencies
 
-* fastai > 1.4
-* image-slicer 0.3.0
-* matplotlib > 3.1.1
+* fastai>=1.0.60
+* image-slicer==0.3.0
+* matplotlib>=3.1.1
 
 ## Usage
 
@@ -47,7 +47,7 @@ python main.py slice
 Then type
 
 ```bash
-python main.py train -labels your_labels -imagenet -predict
+python main.py train -labels your_labels -imagenet
 ```
 
 You have to provide your labels, which must be included in the filename of each image. Default values are *control* and *celldeath*. 
@@ -161,7 +161,7 @@ command | help
 
 ## Version
 
-0.9.1
+0.9.11
 
 ## Authors
 

@@ -15,7 +15,7 @@ celldeath/__pycache__/
 ~/celldeath/celldeath/img_split_test/*
 ~/celldeath/celldeath/img_split_train/*
 ~/celldeath/celldeath/reports/
-.vscode/
+~/celldeath/.vscode/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
