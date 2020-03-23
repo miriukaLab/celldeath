@@ -67,7 +67,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         if test_path is not None:
             predictor(test_path)
             acc_test = os.environ['acc_pred']
-        f = open('/home/smiriuka/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
+        f = open(home_dir+'reports/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n\n')
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
         f.write('\nFinal Training Results\n\n')
@@ -82,7 +82,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.close()
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
-        plt.savefig('/home/smiriuka/celldeath/celldeath/reports/'+'confusion_matrix_'+timestr+'.pdf')
+        plt.savefig(home_dir+'reports/'+'confusion_matrix_'+timestr+'.pdf')
     else:
         data.normalize(imagenet_stats)
         if model == 'resnet50':
@@ -126,7 +126,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         if test_path is not None:
             predictor(test_path)
             acc_test = os.environ['acc_pred']
-        f = open('/home/smiriuka/celldeath/celldeath/reports/'+'report_'+timestr+'.txt', 'w+')
+        f = open(home_dir+'reports/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n\n')
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
         f.write('\nFinal Training Results\n\n')
@@ -141,6 +141,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.close()
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
-        plt.savefig('/home/smiriuka/celldeath/celldeath/reports/'+'confusion_matrix_'+timestr+'.pdf')
+        plt.savefig(home_dir+'reports/'+'confusion_matrix_'+timestr+'.pdf')
 
 

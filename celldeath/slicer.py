@@ -11,7 +11,6 @@ def slice_img(indir_slicing, train_path, n_tiles, test, test_path, perc_test):
     Split images in n tiles. Default is 4. 
     Supports .png and .jpg files
     '''
-    path = os.path.expanduser('~user')
     for root, dirs, filenames in os.walk(indir_slicing):
         for file in filenames:
             if file.endswith('.png'):

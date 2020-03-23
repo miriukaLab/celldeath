@@ -2,7 +2,7 @@
 .pdf
 .txt
 .pyc
-
+celldeath/__pycache__/
 #.vscode
 ~/celldeath/celldeath/apoptosisFastai.ipynb
 ~/celldeath/celldeath/pred_folder/
@@ -14,7 +14,7 @@
 ~/celldeath/celldeath/img_split_test/*
 ~/celldeath/celldeath/img_split_train/*
 ~/celldeath/celldeath/reports/
-
+.vscode/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

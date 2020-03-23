@@ -91,7 +91,7 @@ with this mininmal example, you just need to put your images in the folder *'~/c
 ##### extended example (defaults are shown)
 
 ```bash
-python main.py train -indir /your/path/img -labels yourlabels -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -droput 0.5 -wd 0.1 -imagenet - predict - predict_path
+python main.py train -indir /your/path/img -labels yourlabels -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -dropout 0.5 -wd 0.01 -imagenet -test_path your/path/to/test/img
 ```
 
 ##### train options

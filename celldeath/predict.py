@@ -13,6 +13,9 @@ def newest(path):
 
 
 def predictor(test_path):
+    '''
+    Predict on given images. 
+    '''
     count_true = 0
     count_false = 0
     learn = load_learner('/DATA/sgm/apoptosis/1hr_train')
