@@ -20,7 +20,7 @@ Please note that for training a deep learning model you need a GPU and a lot of 
 
 ### Installing
 
-For installation, just pip it. We suggest to create a virtual environment, and then install in a specific folder. 
+For installation, just pip it. We suggest to create a virtual environment, and then install it in a specific folder called celldeath. 
 
 ```bash
 pip install celldeath -t celldeath
@@ -38,13 +38,13 @@ celldeath has three subcommands (*train*, *predict* and *slice*), each one with 
 
 ### simple use
 
-Put all your images in a folder called */img*, open your terminal and type (beaware that if you train several times with same images, this previous step has to be done just one time)
+Open your terminal, point to teh celldeath folder and type (beaware that if you train several times with same images, this previous step has to be done just one time). Just provide the path to your image folder.
 
 ```bash
-python main.py slice
+python main.py slice -indir_slicing your/img/folder
 ```
 
-Then type
+This command will slice your images into 4 tiles,which then will be used for classification using the next command
 
 ```bash
 python main.py train -labels your_labels -imagenet
@@ -52,7 +52,7 @@ python main.py train -labels your_labels -imagenet
 
 You have to provide your labels, which must be included in the filename of each image. Default values are *control* and *celldeath*. 
 
-Default values will lead to a high accuracy in your set of images for prediction. Once training is finished, you will find a .txt file under the folder *reports* that includes all training parameters, results on the validation image set, and accuracy on the test set.  
+Default values will lead to a high accuracy in your set of images for prediction. Once training is finished, you will find a .txt file under the folder *reports* that includes all training parameters, results on the validation image set, and accuracy on the test set. You will also get a confusion matrix with absolute numbers for prediction.  
 
 
 ## Subcommands
