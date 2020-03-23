@@ -1,4 +1,4 @@
-import setup
+import setuptools
 
 
 
@@ -13,11 +13,14 @@ setuptools.setup(
      version='0.9.0',
      author='Santiago Miriuka, Alejandro La Greca, Nelba Pérez',
      author_email='smiriuka@fleni.org.ar, ale.lagreca@gmail.com, nelbap@hotmail.com',
-     description='A scprit to identify cell death based on deep learning',
+     description='A tool to identify cell death based on deep learning',
      long_description=long_description, 
      long_description_content_type='text/markdown', 
-     url='', 
-     packages=setuptools.find_packages(), 
+     url='https://github.com/sgmiriuka/celldeath', 
+     packages=setuptools.find_packages(),
+     install_requires=['fastai>=1.4',
+                         'image-slicer==0.3.0',
+                         'matplotlib>=3.1.1'] 
      classifiers=[
           'Development Status :: 4 - Beta',
           'Programming Language :: Python :: 3',

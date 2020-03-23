@@ -3,6 +3,7 @@
 .txt
 .pyc
 celldeath/__pycache__/
+.vscode/
 #.vscode
 ~/celldeath/celldeath/apoptosisFastai.ipynb
 ~/celldeath/celldeath/pred_folder/

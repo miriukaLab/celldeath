@@ -1,6 +1,6 @@
 
 
-DRAFT VERSION // WILL BE UPDATED SOON
+DRAFT VERSION // Finale version will be posted soon
 
 # **celldeath**
 
@@ -20,10 +20,10 @@ Please note that for training a deep learning model you need a GPU and a lot of 
 
 ### Installing
 
-For installation, just pip it.
+For installation, just pip it. We suggest to create a virtual environment, and then install in a specific folder. 
 
 ```bash
-pip install celldeath
+pip install celldeath -t celldeath
 ```
 
 ### Dependencies
