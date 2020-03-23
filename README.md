@@ -122,12 +122,12 @@ After training, a .txt file will be saved in the report folder with accuracy, pr
 
 #### predict subcommand  
 
-After training, you can predict the presence of cell death in a set of images by using the *predict* option. In this case, this subcommand will lok for the last trained NN and predict based on it.  
+After training, you can predict the presence of cell death in a set of images by using the *predict* option. Your images should be placed in a subfolder inside the training folder (*indir* from training subcommand).
 
 ##### example  
 
 ```bash
-python main.py predict -path_pred img/path/here -pretrained
+python main.py predict -path_pred indir/predict/your/img
 ```
 
 ##### predict options
