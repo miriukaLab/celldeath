@@ -20,11 +20,11 @@ Please note that for training a deep learning model you need a GPU and a lot of 
 
 ### Installing
 
-For installation, just pip it. We suggest to create a virtual environment, and then install it in a specific folder called celldeath. 
+For installation, we suggest to create a virtual environment, and then, two options:
 
-```bash
-pip install celldeath -t celldeath
-```
+* Download from github and unzip. You will have to manually install dependencies. 
+
+* pip install will be available soon.
 
 ### Dependencies
 
