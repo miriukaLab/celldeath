@@ -139,12 +139,14 @@ command | help
 
 #### slice subcommand
 
-Your training and prediction may improve the more the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image.
+Your training and prediction may improve the more the number of images that you have. If you set up your experiments where cells are confluent enough you may get use of this option. Slice will divide your picture into n tiles, and hence increase the number of images. As far as slicing don't add images without cells you can increase your slicing up to 8 per image. 
+
+It is a good practice to split your images into three sets: trainig, validation and test. Prediction on this last set is independent of training, and so recommended. To create a test set, add the -test_path option and the desired percentage of image to include (-perc_test).
 
 ##### example
 
 ```bash
-python main.py slice -indir_slicing img/path/here -outdir_slicing your_path/img_split_train -n_tiles 4 -test -test_path your_path/img_split_test -perc_test 0.2
+python main.py slice -indir_slicing img/path/here -outdir_slicing your_path/img_split_train -n_tiles 4 -test_path your_path/img_split_test -perc_test 
 ```
 
 ##### slice options
@@ -155,9 +157,8 @@ command | help
 -indir_slicing |   Folder where images are stored.
 -train_path |   Path where slice images are saved.
 -n_tiles | Number of tiles that will be generated. Default is 4; allowed values are 2,4,6 and 8.
--test | Create a random separate set of images for testing. Default is False.
 -test_path | Path where images for testing will be stored. Default is img_split_test.
--perc_test | Percentage of iamges that will be used for testing. Default is 0.2.
+-perc_test | Percentage of iamges that will be used for testing.
 
 ## Version
 
