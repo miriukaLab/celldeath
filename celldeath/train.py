@@ -6,6 +6,7 @@ from fastai.vision import *
 from fastai.callbacks import *
 from fastai.metrics import error_rate
 from fastai.callbacks import *
+from PIL import Image, ImageFile
 import os
 import time
 from celldeath.predict import predictor
@@ -14,6 +15,7 @@ import matplotlib.pyplot as plt
     
 
 def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path):
+    ImageFile.LOAD_TRUNCATED_IMAGES = True
     timestr = time.strftime("%Y%m%d-%H%M%S")  
     home_dir= os.path.expanduser('~user')
     fnames = get_image_files(indir)
