@@ -17,11 +17,7 @@ Please note that for training a deep learning model you need a GPU and a lot of 
 
 ### Installing
 
-For installation, we suggest to create a virtual environment, and then, two options:
-
-* Download from github and unzip. You will have to manually install dependencies. 
-
-* install with pip
+For installation, we suggest create a virtual environment, and then:
 
 ```bash
 pip install celldeath
@@ -42,13 +38,13 @@ celldeath has three subcommands (*train*, *predict* and *slice*), each one with 
 Open your terminal and point to the celldeath folder. Then type providing type
 
 ```bash
-python main.py slice -indir_slicing your/img/folder
+celldeath slice -indir_slicing your/img/folder
 ```
 
 Beaware that if you train several times with same images, this previous step has to be done just one time. This command will slice your images into 4 tiles,which then will be used for classification using the next command
 
 ```bash
-python main.py train -labels your_labels -imagenet
+celldeath train -labels your_labels -imagenet
 ```
 
 You have to provide your labels, which must be included as a part of the filename of each image. Default values are *control* and *celldeath*. You can have more than 2 conditions. 
@@ -89,7 +85,7 @@ For image labelling, you can include in each of your image filenames either the 
 ##### minimal example  
 
 ```bash
-python main.py train -imagenet
+celldeath train -imagenet
 ```
 
 with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'* (default place if you slice them, see below), and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes (for exmaple, just one  hour after cell death induction). In many cases these changes are not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it may not be superior to a plain training, and even a little bit inferior.
@@ -97,7 +93,7 @@ with this mininmal example, you just need to put your images in the folder *'~/c
 ##### extended example (defaults are shown)
 
 ```bash
-python main.py train -indir /your/path/img -labels yourlabels -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -dropout 0.5 -wd 0.01 -imagenet -test_path your/path/to/test/img
+celldeath train -indir /your/path/img -labels yourlabels -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -dropout 0.5 -wd 0.01 -imagenet -test_path your/path/to/test/img
 ```
 
 ##### train options
@@ -130,7 +126,7 @@ After training, you can predict the presence of cell death in a set of images by
 ##### example  
 
 ```bash
-python main.py predict -path_pred indir/predict/your/img
+celldeath predict -path_pred indir/predict/your/img
 ```
 
 ##### predict options
@@ -149,7 +145,7 @@ It is a good practice to split your images into three sets: trainig, validation 
 ##### example
 
 ```bash
-python main.py slice -indir_slicing img/path/here -outdir_slicing your_path/img_split_train -n_tiles 4 -test_path your_path/img_split_test -perc_test 
+celldeath slice -indir_slicing img/path/here -outdir_slicing your_path/img_split_train -n_tiles 4 -test_path your_path/img_split_test -perc_test 
 ```
 
 ##### slice options
@@ -165,7 +161,7 @@ command | help
 
 ## Version
 
-0.9.12
+0.9.15
 
 ## Authors
 

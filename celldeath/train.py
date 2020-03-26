@@ -8,8 +8,8 @@ from fastai.metrics import error_rate
 from fastai.callbacks import *
 import os
 import time
-from predict import predictor
-from utils import create_folder
+from celldeath.predict import predictor
+from celldeath.utils import create_folder
 import matplotlib.pyplot as plt
     
 

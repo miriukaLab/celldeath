@@ -10,7 +10,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
      name='celldeath',
-     version='0.9.12',
+     version='0.9.15',
      author='Santiago Miriuka, Alejandro La Greca, Nelba Pérez',
      author_email='smiriuka@fleni.org.ar, ale.lagreca@gmail.com, nelbap@hotmail.com',
      description='A tool to identify cell death based on deep learning',
@@ -21,6 +21,10 @@ setuptools.setup(
      install_requires=['fastai>=1.0.60',
                          'image-slicer==0.3.0',
                          'matplotlib>=3.1.1'], 
+     entry_points={
+                    'console_scripts': [
+                    'celldeath = celldeath.main:main']
+                    },
      classifiers=[
           'Development Status :: 4 - Beta',
           'Programming Language :: Python :: 3',

@@ -3,32 +3,14 @@
 
 import argparse
 import textwrap
-from slicer import slice_img
-from train import trainer
-from predict import predictor
-from utils import create_folder, move_files
+from celldeath.slicer import slice_img
+from celldeath.train import trainer
+from celldeath.predict import predictor
+from celldeath.utils import create_folder, move_files
 import os
 
-def slice():
-    create_folder(args.train_path)
-    slice_img(args.indir_slicing, args.train_path, args.n_tiles, 
-                args.test_path, args.perc_test)
-    if args.perc_test is not None:
-        create_folder(args.test_path)
-        move_files(args.train_path, args.test_path, args.perc_test)
-        print('{} of your images were randomly moved to a test folder'.format(args.perc_test))
-    print('\nDone.')
 
-def train():
-    trainer(args.indir, args.labels, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
-            args.epochs, args.bs, args.dropout, args.wd, args.imagenet, 
-            args.test_path)
-
-def predict():
-    predictor(args.path_pred)
-
-
-if __name__ == '__main__':
+def main():
     path = os.path.expanduser('~user')+'celldeath/'
     parser = argparse.ArgumentParser(prog='celldeath', 
             formatter_class=argparse.RawTextHelpFormatter,
@@ -40,13 +22,16 @@ Subcommands are:
 
     slice: 
             Only needed to run once, and only if you need to slice your images. 
+            For help type celldeath slice -h
 
     train: 
             Core option for training the neural network. 
+            For help type celldeath train -h
     
     predict: 
-            Option for prediction. One or more images are given and yields prediction about if 
-            those cells are undergoing cell death.  
+            Option for prediction only. One or more images are given and yields prediction about if 
+            those cells are undergoing cell death.
+            For help type celldeath predict -h  
 
 
 '''))
@@ -96,7 +81,8 @@ Subcommands are:
     parser_b.add_argument('-bs', dest='bs', type=int, metavar='INT',
                             default=16,   
                             help='Batch Size')
-    parser_b.add_argument('-dropout', dest='dropout', type=float, default = 0.5,  
+    parser_b.add_argument('-dropout', dest='dropout', type=float, metavar='FLOAT', 
+                            default = 0.5,  
                             help='Drop out to be applied.')
     parser_b.add_argument('-wd', dest='wd', type=float, metavar='FLOAT',
                             default=0.01, 
@@ -119,11 +105,21 @@ Subcommands are:
         print('\n')
         print('Original images will be slice in {} tiles and stored in a separate folder.'.format(args.n_tiles))
         print('\n')
-        slice()
-        
-
+        create_folder(args.train_path)
+        slice_img(args.indir_slicing, args.train_path, args.n_tiles, 
+                args.test_path, args.perc_test)
+        if args.perc_test is not None:
+            create_folder(args.test_path)
+            move_files(args.train_path, args.test_path, args.perc_test)
+            print('{} of your images were randomly moved to a test folder'.format(args.perc_test))
+        print('\nDone.')
     elif args.command == 'train':
-        train()
-
+        trainer(args.indir, args.labels, args.model, args.valid_pct, args.l_lr, args.u_lr, args.aug, 
+            args.epochs, args.bs, args.dropout, args.wd, args.imagenet, 
+            args.test_path)
     elif args.command == 'predict':
-        predict() 
+        predictor(args.path_pred)
+
+
+if __name__ == '__main__':
+    main()
