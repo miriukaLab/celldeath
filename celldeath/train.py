@@ -7,6 +7,7 @@ from fastai.callbacks import *
 from fastai.metrics import error_rate
 from fastai.callbacks import *
 from PIL import Image, ImageFile
+from pathlib import Path
 import os
 import time
 from celldeath.predict import predictor
@@ -17,7 +18,7 @@ import matplotlib.pyplot as plt
 def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path):
     ImageFile.LOAD_TRUNCATED_IMAGES = True
     timestr = time.strftime("%Y%m%d-%H%M%S")  
-    home_dir= os.path.expanduser('~user')
+    home_dir= str(Path.home())
     fnames = get_image_files(indir)
     pat = r'(?=('+'|'.join(labels)+r'))'
     tfms = get_transforms(do_flip=True, flip_vert=True, max_lighting=0.1, max_warp=0.)
@@ -67,9 +68,24 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         time.sleep(2)
         acc_test = ''
         if test_path is not None:
-            predictor(test_path)
-            acc_test = os.environ['acc_pred']
-        f = open(home_dir+'reports/'+'report_'+timestr+'.txt', 'w+')
+            count_true = 0
+            count_false = 0
+            learn = load_learner(indir)
+            for filename in os.listdir(test_path):
+                img = open_image(test_path+'/'+filename) 
+                pred_class,pred_idx,outputs = learn.predict(img)
+                if str(pred_class) in filename:
+                    prediction = 'True'
+                    count_true += 1
+                else:
+                    prediction = 'False'
+                    count_false += 1
+                print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
+            print('\n')
+            acc_test = count_true/(count_true+count_false)  
+            print('Accuracy for test images:\t {}\n'.format(acc_test))
+        create_folder(home_dir+'/celldeath/')
+        f = open(home_dir+'/celldeath/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n\n')
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
         f.write('\nFinal Training Results\n\n')
@@ -84,7 +100,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.close()
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
-        plt.savefig(home_dir+'reports/'+'confusion_matrix_'+timestr+'.pdf')
+        plt.savefig(home_dir+'/celldeath/'+'confusion_matrix_'+timestr+'.pdf')
     else:
         data.normalize(imagenet_stats)
         if model == 'resnet50':
@@ -126,9 +142,24 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         time.sleep(2)
         acc_test = ''
         if test_path is not None:
-            predictor(test_path)
-            acc_test = os.environ['acc_pred']
-        f = open(home_dir+'reports/'+'report_'+timestr+'.txt', 'w+')
+            count_true = 0
+            count_false = 0
+            learn = load_learner(indir)
+            for filename in os.listdir(test_path):
+                img = open_image(test_path+'/'+filename) 
+                pred_class,pred_idx,outputs = learn.predict(img)
+                if str(pred_class) in filename:
+                    prediction = 'True'
+                    count_true += 1
+                else:
+                    prediction = 'False'
+                    count_false += 1
+                print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
+            print('\n')
+            acc_test = count_true/(count_true+count_false)  
+            print('Accuracy for test images:\t {}\n'.format(acc_test))
+        create_folder(home_dir+'/celldeath/')
+        f = open(home_dir+'/celldeath/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n\n')
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
         f.write('\nFinal Training Results\n\n')
@@ -143,6 +174,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.close()
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
-        plt.savefig(home_dir+'reports/'+'confusion_matrix_'+timestr+'.pdf')
+        plt.savefig(home_dir+'/celldeath/'+'confusion_matrix_'+timestr+'.pdf')
 
 

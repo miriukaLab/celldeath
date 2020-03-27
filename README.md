@@ -117,7 +117,7 @@ command | help |suggestion
 -imagenet | Define if training with imagnet pretrained weights. Default is False.
 -test_path | Path where test images are located. Default is '/img_split_test'.
 
-After training, a .txt file will be saved in the report folder with accuracy, precision and recall, as well as confusion matrix values. Also, a .csv file named *history*+current time will be saved with each of the the training loss and accuracy epochs values.  
+After training, a .txt file will be saved in a folder called *celldeath* (created in your home dir) with accuracy, precision and recall, as well as confusion matrix values. Also, a .csv file named *history*+current time will be saved with each of the the training loss and accuracy epochs values.  
 
 #### predict subcommand  
 
@@ -161,7 +161,7 @@ command | help
 
 ## Version
 
-0.9.16
+0.9.17
 
 ## Authors
 
