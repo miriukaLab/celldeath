@@ -41,7 +41,7 @@ Open your terminal and point to the celldeath folder. Then type providing type
 celldeath slice -indir_slicing your/img/folder
 ```
 
-Beaware that if you train several times with same images, this previous step has to be done just one time. This command will slice your images into 4 tiles,which then will be used for classification using the next command
+Be aware that if you train several times with same images, this previous step has to be done just one time. This command will slice your images into 4 tiles,which then will be used for classification using the next command
 
 ```bash
 celldeath train -labels your_labels -imagenet
@@ -78,9 +78,9 @@ A few recommendations:
 
 #### train subcommand
 
-You can train your own images with this option. Briefly, you should take light transmitted pictures of at least two conditions (control and cell death). Be aware that the more information you feed to the algorythm, the better the ability to train and predict. So, we advise that you should take at least 500 pictures in different biological replicate. Then you can slice them, and use data augmentation to increase you input.  
+You can train your own images with this option. Briefly, you should take light transmitted pictures of at least two conditions (control and cell death). Be aware that the more information you feed to the algorythm, the better the ability to train and predict. So, we advise that you should take at least 500 pictures in different biological replicate. Then you can slice them, and use data augmentation to increase your input.  
 
-For image labelling, you can include in each of your image filenames either the string '*control*' or the string '*celldeath*'. These are defaults, but you can change them with the argument -labels, or even include more catgories.   
+For image labelling, you can include in each of your image filenames either the string '*control*' or the string '*celldeath*'. These are defaults, but you can change them with the argument -labels, or even include more categories.
 
 ##### minimal example  
 
@@ -88,7 +88,7 @@ For image labelling, you can include in each of your image filenames either the 
 celldeath train -imagenet
 ```
 
-with this mininmal example, you just need to put your images in the folder *'~/celldeath/split_img/'* (default place if you slice them, see below), and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes (for exmaple, just one  hour after cell death induction). In many cases these changes are not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it may not be superior to a plain training, and even a little bit inferior.
+with this minimal example, you just need to put your images in the folder *'~/celldeath/split_img/'* (default place if you slice them, see below), and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes (for example, just one  hour after cell death induction). In many cases these changes are not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it may not be superior to a plain training, and even a little bit inferior.
 
 ##### extended example (defaults are shown)
 
@@ -103,9 +103,9 @@ Short explanations about these options are given below. Some of them may have a 
 command | help |suggestion
 ---   |  --- | ---
 -h, --help |  show this help message and exit
--indir  |  Folder where images are stored. Beaware that default is with splitted images and so default is /img_split_train'
+-indir  |  Folder where images are stored. Be aware that default is with splitted images and so default is /img_split_train'
 -labels | Give labels of each experimental condition. Labels should be written as in the filenames. Default values are '*control*' and '*celldeath*'.
--model   | Model used for training. Default is ResNet50. Models availbe are resnet34, resnet50, resnet101, and densenet121. | Give a change to a larger architecture, although it will take longer to train.
+-model   | Model used for training. Default is ResNet50. Models available are resnet34, resnet50, resnet101, and densenet121. | Give a change to a larger architecture, although it will take longer to train.
 -valid_pct |   Validation percentage. Default is 0.2
 -l_lr | Lower Limit for learning rate. Default is 1e-4 | You may try 1e-5 or even 1e-6
 -u_lr |  Upper limit for learning rate. Default is 1e-3|  
