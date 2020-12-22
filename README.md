@@ -166,8 +166,8 @@ command | help
 ## Authors
 
 * **Santiago Miriuka** | <sgmiriuka@gmail.com> | [GitHub](https://github.com/sgmiriuka) | [twitter](https://twitter.com/santiagomiriuka)
-* **Alejandro La Greca** | <ale.lagreca@gmail.com>
-* **Nelba Pérez** | <nelbap@hotmail.com> | [twitter](https://twitter.com/NelbaBio)
+* **Alejandro La Greca** | <ale.lagreca@gmail.com> | [GitHub](https://github.com/alelagreca) | [twitter](https://twitter.com/aled_lg)
+* **Nelba Pérez** | <nelbap@hotmail.com> | [GitHub](https://github.com/nelbaperez) | [twitter](https://twitter.com/NelbaBio)
 
 ## Reference
 
