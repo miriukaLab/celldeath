@@ -5,7 +5,6 @@
 from fastai.vision import *
 from fastai.callbacks import *
 from fastai.metrics import error_rate
-from fastai.callbacks import *
 from PIL import Image, ImageFile
 from pathlib import Path
 import os
@@ -48,6 +47,13 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                             )
         learn.save('cell_death_training_'+timestr)
         learn.export()
+        fig1 = learn.recorder.plot_losses()
+        fig1 = plt.gcf()
+        plt.savefig(home_dir+'/celldeath/'+'LossCurve_'+timestr+'.pdf', 
+            dpi=300, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1,
+            frameon=None, metadata=None)
         interp = ClassificationInterpretation.from_learner(learn)
         print('\n')
         cm = interp.confusion_matrix()
@@ -122,6 +128,13 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         timestr = time.strftime("%Y%m%d-%H%M%S")
         learn.save('cell_death_training_'+timestr)
         learn.export()
+        fig1 = learn.recorder.plot_losses()
+        fig1 = plt.gcf()
+        plt.savefig(home_dir+'/celldeath/'+'LossCurve_'+timestr+'.pdf', 
+            dpi=300, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1,
+            frameon=None, metadata=None)
         interp = ClassificationInterpretation.from_learner(learn)
         print('\n')
         cm = interp.confusion_matrix()
