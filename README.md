@@ -40,7 +40,7 @@ celldeath has three modules (*train*, *predict* and *slice*), each one with opti
 Open your terminal and type
 
 ```bash
-celldeath slice -indir_slicing your/img/folder # path to your images
+celldeath slice -indir_slicing your/img/folder # path to your input images; output is directed by default to img_split_train, unless -train_path argument is provided
 ```
 
 > Be aware that if you train several times with the same images, this previous step has to be done just once. This command will slice your images into 4 tiles, which will be used later for training.
@@ -74,7 +74,7 @@ Also, it is a good practice to split your images into three sets: trainig, valid
 #### example
 
 ```bash
-celldeath slice -indir_slicing img/path/here -outdir_slicing your_path/img_split_train -n_tiles 4 -test_path your_path/img_split_test -perc_test 
+celldeath slice -indir_slicing path/to/input -train_path ~/img_split_train -n_tiles 4 -test_path your_path/img_split_test -perc_test 
 ```
 
 #### slice options
@@ -92,23 +92,29 @@ command | help
 
 ### TRAIN
 
-celldeath allows you to train your own images without too much knowledge on deep learning. Be aware that you need at least a few hundred images for proper training and prediction. However, as mentioned before, with the *slice* module you can split your images into n tiles (usually 4) increasing your training performance. Also, using the argument -aug will artificially increase the information gathered from each image by flipping and rotating them. The *train* module already has most of the options set up for an excellent training, as mentioned in the short version section.
+celldeath allows you to train your own images without too much knowledge on deep learning. Be aware that you need at least a few hundred images for proper training and prediction. However, as mentioned before, with the *slice* module you can split your images into n tiles (usually 4) increasing your training performance. Also, using the argument -aug will artificially increase the information gathered from each image by flipping and rotating them. The *train* module already has most options set up for an excellent training, as mentioned in the short version section.
 
   
 
 #### train subcomman
 
-You can train your own images with this option. Briefly, you should take light transmitted pictures of at least two conditions (control and cell death). Be aware that the more information you feed to the algorythm, the better the ability to train and predict. So, we advise that you should take at least 500 pictures in different biological replicate. Then you can slice them, and use data augmentation to increase your input.  
+You can train your own images with this option. Briefly, you should take light transmitted pictures of at least two conditions (e.g. control and celldeath). Be aware that the more information you feed to the algorithm, the better the ability to train and predict. So, we recommend you take at least 500 pictures for each biological replicate. Then you can slice them, and use data augmentation to increase your input.  
 
 For image labelling, you can include in each of your image filenames either the string '*control*' or the string '*celldeath*'. These are defaults, but you can change them with the argument -labels, or even include more categories.
 
-### minimal example  
+```bash
+# possible naming formats
+testFile_control_RGB_1h.png
+testFile_celldeath_RGB_1h.png
+```
+
+### minimal example with pretrained models (imagenet) 
 
 ```bash
 celldeath train -imagenet
 ```
 
-with this minimal example, you just need to put your images in the folder *'~/celldeath/split_img/'* (default place if you slice them, see below), and make sure your filenames contains either *'control'* or *'celldeath'*, acording to your experiments. Defaults will probably take you to a high accuracy. We proved that our script can identify ~99% of celldeath images with minimal changes (for example, just one  hour after cell death induction). In many cases these changes are not perceptibles for the human eye. The *-pretrained* option allows you to use a neural network previously trained (with *imagenet*), which may allow to reach a high accuracy in a shorter time. However, in our experience it may not be superior to a plain training, and even a little bit inferior.
+In this minimal example, you just need to put your images in *'~/celldeath/img_split_train/'* (default path if you used the slice module, see SLICE section), and make sure your filenames contain the labels (e.g. *'control'* or *'celldeath'*), acording to your experiments. The *-imagenet* option allows you to use a neural network previously trained (with *imagenet*), which may result in a accurate short-running-time training. However, in our experience it did not produce better results (lower test accuracy).
 
 ### extended example (defaults are shown)
 
