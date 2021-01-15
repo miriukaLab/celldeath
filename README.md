@@ -122,7 +122,7 @@ In this minimal example, you just need to put your images in *'~/celldeath/img_s
 ### Extended example (defaults are shown)
 
 ```bash
-celldeath train -indir /your/path/img -labels control celldeath -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 40 -bs 16 -dropout 0.5 -wd 0.01 -imagenet -test_path your/path/to/test/img # 'control' and 'celldeath' labels are shown, but you may use your own as long as they can be found somewhere in the filename
+celldeath train -indir /your/path/img -labels control celldeath -model resnet50 -valid_pc 0.2 -l_lr 1e-4 -u_lr 1e-3 -aug -epochs 50 -bs 16 -dropout 0.5 -wd 0.01 -test_path your/path/to/test/img # 'control' and 'celldeath' labels are shown, but you may use your own as long as they can be found somewhere in the filename
 ```
 &nbsp;
 ### Train options
@@ -148,7 +148,13 @@ command | description |suggestion
 
 &nbsp;
 
-After training, a .txt file will be saved in a folder called *celldeath* (created in your home dir) with accuracy, precision and recall, as well as confusion matrix values. Also, a .csv file named *history*+current time will be saved with each of the the training loss and accuracy epochs values.  
+### Train results
+
+After training, a .txt file will be saved in a folder called *celldeath* (created in your home dir) with accuracy, precision and recall, as well as confusion matrix values. Also, a .csv file named *history*+current time will be saved with each of the training loss and accuracy values per epoch.
+
+In addition, three plots will be saved in this directory:
+
+* Learning curve with training and validation sets (Loss function)
 
 &nbsp;
 ### A few recommendations:  
