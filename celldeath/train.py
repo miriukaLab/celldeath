@@ -28,6 +28,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                                     valid_pct=valid_pct,
                                     bs=bs
                                     )                               
+    create_folder(home_dir+'/celldeath/')
     if imagenet == False:
         stats=data.batch_stats()
         data.normalize(stats)
@@ -42,7 +43,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
                             callbacks=[ SaveModelCallback(learn, every='improvement', 
                                             monitor='valid_loss', name='best'),
-                                        CSVLogger(learn, filename='history'+timestr),
+                                        CSVLogger(learn, filename=home_dir+'/celldeath/history_'+model+'_'+timestr)
                                         ]
                             )
         learn.save('cell_death_training_'+timestr)
@@ -51,6 +52,11 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         fig1 = plt.gcf()
         plt.savefig(home_dir+'/celldeath/'+'LossCurve_'+timestr+'.pdf', 
             dpi=300, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1,
+            frameon=None, metadata=None)
+        learn.recorder.plot_metrics()
+        plt.savefig(home_dir+'/celldeath/'+'Accuracy'+timestr+'.pdf', dpi=300, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
             transparent=False, bbox_inches=None, pad_inches=0.1,
             frameon=None, metadata=None)
@@ -90,7 +96,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
-        create_folder(home_dir+'/celldeath/')
         f = open(home_dir+'/celldeath/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n\n')
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
@@ -122,7 +127,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         learn.fit_one_cycle(epochs, max_lr=slice(l_lr,u_lr), wd=wd,
                             callbacks=[SaveModelCallback(learn, every='improvement', 
                                             monitor='valid_loss', name='best'),
-                                        CSVLogger(learn, filename='history'+timestr)
+                                        CSVLogger(learn, filename=home_dir+'/celldeath/history_'+model+'_'+timestr)
                                         ]
                             )
         timestr = time.strftime("%Y%m%d-%H%M%S")
@@ -132,6 +137,11 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         fig1 = plt.gcf()
         plt.savefig(home_dir+'/celldeath/'+'LossCurve_'+timestr+'.pdf', 
             dpi=300, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1,
+            frameon=None, metadata=None)
+        learn.recorder.plot_metrics()
+        plt.savefig(home_dir+'/celldeath/'+'Accuracy'+timestr+'.pdf', dpi=300, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
             transparent=False, bbox_inches=None, pad_inches=0.1,
             frameon=None, metadata=None)
@@ -171,7 +181,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
-        create_folder(home_dir+'/celldeath/')
         f = open(home_dir+'/celldeath/'+'report_'+timestr+'.txt', 'w+')
         f.write('Training parameters:\n\n')
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
