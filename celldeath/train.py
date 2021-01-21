@@ -9,6 +9,7 @@ from PIL import Image, ImageFile
 from pathlib import Path
 import os
 import time
+import numpy as np
 from celldeath.predict import predictor
 from celldeath.utils import create_folder
 import matplotlib.pyplot as plt
@@ -83,15 +84,23 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             count_true = 0
             count_false = 0
             learn = load_learner(indir)
+            word_to_id = {label: idx for idx, label in enumerate(set(labels))} 
+            id_to_word = [label for idx, label in enumerate(set(labels))] 
+            #id_to_word = np.asarray(id_to_word)
+            N = len(labels)
+            matrix = np.zeros((N,N))
             for filename in os.listdir(test_path):
                 img = open_image(test_path+'/'+filename) 
                 pred_class,pred_idx,outputs = learn.predict(img)
                 if str(pred_class) in filename:
                     prediction = 'True'
                     count_true += 1
+                    index = word_to_id[pred_class]
+                    matrix[index, index] += 1
                 else:
                     prediction = 'False'
                     count_false += 1
+                    matrix[word_to_id[filename], word_to_id[pred_class]] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
             print('\n')
             acc_test = count_true/(count_true+count_false)  
@@ -111,7 +120,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.close()
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
-        plt.savefig(home_dir+'/celldeath/'+'confusion_matrix_'+timestr+'.pdf')
+        plt.savefig(home_dir+'/celldeath/'+'Validation_confusion_matrix_'+timestr+'.pdf')
     else:
         data.normalize(imagenet_stats)
         if model == 'resnet50':
@@ -168,15 +177,22 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             count_true = 0
             count_false = 0
             learn = load_learner(indir)
+            word_to_id = {label: idx for idx, label in enumerate(set(labels))} 
+            id_to_word = [label for idx, label in enumerate(set(labels))]
+            #id_to_word = np.asarray(id_to_word)
+            N = len(labels)
             for filename in os.listdir(test_path):
                 img = open_image(test_path+'/'+filename) 
                 pred_class,pred_idx,outputs = learn.predict(img)
                 if str(pred_class) in filename:
                     prediction = 'True'
                     count_true += 1
+                    index = word_to_id[pred_class]
+                    matrix[index, index] += 1
                 else:
                     prediction = 'False'
                     count_false += 1
+                    matrix[word_to_id[filename], word_to_id[pred_class]] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
             print('\n')
             acc_test = count_true/(count_true+count_false)  
@@ -196,6 +212,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.close()
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
-        plt.savefig(home_dir+'/celldeath/'+'confusion_matrix_'+timestr+'.pdf')
+        plt.savefig(home_dir+'/celldeath/'+'Validation_confusion_matrix_'+timestr+'.pdf')
 
 
