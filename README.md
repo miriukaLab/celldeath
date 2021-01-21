@@ -1,9 +1,9 @@
 # **celldeath**
 
-A simple python script based on deep learning optimized for classifying cell death in transmitted light microscopy images. 
+Python-based deep learning model optimized for classifying cultures undergoing cell death or not in transmitted light microscopy images. 
 <img src="./img.png" align="right" height="200" width="200" >
 
-Our goal is to provide a tool for researchers with none  or minimal idea of deep learning.
+Our goal is to provide a tool for researchers with none or minimal idea of deep learning.
 
 &nbsp;
 ## Getting Started
@@ -150,11 +150,14 @@ command | description |suggestion
 
 ### Train results
 
-After training, a .txt file will be saved in a folder called *celldeath* (created in your home dir) with accuracy, precision and recall, as well as confusion matrix values. Also, a .csv file named *history*+current time will be saved with each of the training loss and accuracy values per epoch.
+After training, a report file will be saved in a folder called *celldeath* (created in your home dir) with accuracy, precision and recall, as well as confusion matrix values. Also, a .csv file named *history*+current time will be saved with each of the training loss and accuracy values per epoch.
 
-In addition, three plots will be saved in this directory:
+In addition, four plots will be saved in this directory:
 
 * Learning curve with training and validation sets (Loss function)
+* Accuracy
+* Validation confusion matrix
+* Test confusion matrix
 
 &nbsp;
 ### A few recommendations:  
