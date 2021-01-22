@@ -23,7 +23,7 @@ def move_files(fromdir, todir, perc_test):
         if np.random.rand(1) < perc_test:
             shutil.move(fromdir+'/'+ f, todir+'/'+f)        
 
-def plot_confusion_matrix(cm,
+def plot_confusion_matrix(cm, dir,
                           target_names,
                           title='Test Confusion matrix',
                           cmap=None,
@@ -66,4 +66,4 @@ def plot_confusion_matrix(cm,
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
-    plt.savefig(home_dir+'/celldeath/'+'Test_confusion_matrix_'+timestr+'.pdf')
+    plt.savefig(dir+'/celldeath/'+'Test_confusion_matrix_'+timestr+'.pdf')

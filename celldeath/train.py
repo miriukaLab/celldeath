@@ -11,7 +11,7 @@ import os
 import time
 import numpy as np
 from celldeath.predict import predictor
-from celldeath.utils import create_folder
+from celldeath.utils import create_folder, plot_confusion_matrix
 import matplotlib.pyplot as plt
     
 
@@ -85,8 +85,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             count_false = 0
             learn = load_learner(indir)
             word_to_id = {label: idx for idx, label in enumerate(set(labels))} 
-            id_to_word = [label for idx, label in enumerate(set(labels))] 
-            #id_to_word = np.asarray(id_to_word)
             N = len(labels)
             matrix = np.zeros((N,N))
             for filename in os.listdir(test_path):
@@ -95,13 +93,14 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                 if str(pred_class) in filename:
                     prediction = 'True'
                     count_true += 1
-                    index = word_to_id[pred_class]
-                    matrix[index, index] += 1
+                    #index = word_to_id[pred_class]
+                    matrix[word_to_id[filename], word_to_id[filename]] += 1
                 else:
                     prediction = 'False'
                     count_false += 1
                     matrix[word_to_id[filename], word_to_id[pred_class]] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
+                plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
@@ -178,9 +177,8 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             count_false = 0
             learn = load_learner(indir)
             word_to_id = {label: idx for idx, label in enumerate(set(labels))} 
-            id_to_word = [label for idx, label in enumerate(set(labels))]
-            #id_to_word = np.asarray(id_to_word)
             N = len(labels)
+            matrix = np.zeros((N,N))
             for filename in os.listdir(test_path):
                 img = open_image(test_path+'/'+filename) 
                 pred_class,pred_idx,outputs = learn.predict(img)
@@ -194,6 +192,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                     count_false += 1
                     matrix[word_to_id[filename], word_to_id[pred_class]] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
+                plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
