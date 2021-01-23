@@ -11,7 +11,7 @@ import os
 import time
 import numpy as np
 from celldeath.predict import predictor
-from celldeath.utils import create_folder, plot_confusion_matrix
+from celldeath.utils import create_folder, extractMax, plot_confusion_matrix
 import matplotlib.pyplot as plt
     
 
@@ -63,21 +63,22 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             frameon=None, metadata=None)
         interp = ClassificationInterpretation.from_learner(learn)
         print('\n')
-        cm = interp.confusion_matrix()
-        acc_valid = (cm[0,0] + cm[1,1])/(cm[0,0]+cm[0,1]+cm[1,0]+cm[1,1])
-        pre = cm[0,0]/(cm[0,0]+cm[0,1])
-        rec = cm[0,0]/(cm[0,0]+cm[1,0])
+        
+        for filename in os.listdir(home_dir+'/celldeath/'):
+            if filename.startswith('history'):
+                acc_valid,t_loss,v_loss=extractMax()
+        
+        interp.plot_confusion_matrix(return_fig=False)
+        plt.tight_layout()
+        plt.savefig(home_dir+'/celldeath/'+'Validation_confusion_matrix_'+timestr+'.pdf')
+
         print('Final Training Results for validation images:')
         print('\n')
         print('Accuracy:\t {:0.4f}'.format(acc_valid))
-        print('Precision:\t {:0.4f}'.format(pre))
-        print('Recall:\t\t {:0.4f}'.format(rec))
+        print('Training Loss:\t {:0.4f}'.format(t_loss))
+        print('Validation Loss:\t {:0.4f}'.format(v_loss))
         print('\n')
-        print('True Positives:\t\t {}'.format(cm[0,0]))
-        print('False Positives:\t {}'.format(cm[0,1]))
-        print('False Negatives:\t {}'.format(cm[1,0]))
-        print('True Negatives:\t\t {}'.format(cm[1,1]))
-        print('\n')
+        
         time.sleep(2)
         acc_test = ''
         if test_path is not None:
@@ -90,15 +91,18 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             for filename in os.listdir(test_path):
                 img = open_image(test_path+'/'+filename) 
                 pred_class,pred_idx,outputs = learn.predict(img)
+                index = word_to_id[str(pred_class)]
                 if str(pred_class) in filename:
                     prediction = 'True'
                     count_true += 1
-                    #index = word_to_id[pred_class]
-                    matrix[word_to_id[filename], word_to_id[filename]] += 1
+                    matrix[index, index] += 1
                 else:
                     prediction = 'False'
                     count_false += 1
-                    matrix[word_to_id[filename], word_to_id[pred_class]] += 1
+                    for lab in labels:
+                        if filename.startswith(lab):
+                            outdex=word_to_id[lab]
+                            matrix[outdex, index] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
                 plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
             print('\n')
@@ -109,17 +113,11 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
         f.write('\nFinal Training Results\n\n')
         f.write('Accuracy:\t\t {:0.4f}\n'.format(acc_valid))
-        f.write('Precision:\t {:0.4f}\n'.format(pre))
-        f.write('Recall:\t\t {:0.4f}\n'.format(rec))
-        f.write('True Positives:\t\t {}\n'.format(cm[0,0]))
-        f.write('False Positives:\t\t {}\n'.format(cm[0,1]))
-        f.write('False Negatives:\t\t {}\n'.format(cm[1,0]))
-        f.write('True Negatives:\t\t {}\n'.format(cm[1,1]))
+        f.write('Training Loss:\t\t {:0.4f}\n'.format(t_loss))
+        f.write('Validation Loss:\t\t {:0.4f}\n'.format(v_loss))
         f.write('\nAccuracy on the test set:\t {}\n'.format(acc_test))
         f.close()
-        interp.plot_confusion_matrix(return_fig=False)
-        plt.tight_layout()
-        plt.savefig(home_dir+'/celldeath/'+'Validation_confusion_matrix_'+timestr+'.pdf')
+        
     else:
         data.normalize(imagenet_stats)
         if model == 'resnet50':
@@ -138,7 +136,6 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                                         CSVLogger(learn, filename=home_dir+'/celldeath/history_'+model+'_'+timestr)
                                         ]
                             )
-        timestr = time.strftime("%Y%m%d-%H%M%S")
         learn.save('cell_death_training_'+timestr)
         learn.export()
         fig1 = learn.recorder.plot_losses()
@@ -155,21 +152,22 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             frameon=None, metadata=None)
         interp = ClassificationInterpretation.from_learner(learn)
         print('\n')
-        cm = interp.confusion_matrix()
-        acc_valid = (cm[0,0] + cm[1,1])/(cm[0,0]+cm[0,1]+cm[1,0]+cm[1,1])
-        pre = cm[0,0]/(cm[0,0]+cm[0,1])
-        rec = cm[0,0]/(cm[0,0]+cm[1,0])
+        
+        for filename in os.listdir(home_dir+'/celldeath/'):
+            if filename.startswith('history'):
+                acc_valid,t_loss,v_loss=extractMax()
+        
+        interp.plot_confusion_matrix(return_fig=False)
+        plt.tight_layout()
+        plt.savefig(home_dir+'/celldeath/'+'Validation_confusion_matrix_'+timestr+'.pdf')
+
         print('Final Training Results for validation images:')
         print('\n')
         print('Accuracy:\t {:0.4f}'.format(acc_valid))
-        print('Precision:\t {:0.4f}'.format(pre))
-        print('Recall:\t\t {:0.4f}'.format(rec))
+        print('Training Loss:\t {:0.4f}'.format(t_loss))
+        print('Validation Loss:\t {:0.4f}'.format(v_loss))
         print('\n')
-        print('True Positives:\t\t {}'.format(cm[0,0]))
-        print('False Positives:\t {}'.format(cm[0,1]))
-        print('False Negatives:\t {}'.format(cm[1,0]))
-        print('True Negatives:\t\t {}'.format(cm[1,1]))
-        print('\n')
+
         time.sleep(2)
         acc_test = ''
         if test_path is not None:
@@ -182,15 +180,18 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
             for filename in os.listdir(test_path):
                 img = open_image(test_path+'/'+filename) 
                 pred_class,pred_idx,outputs = learn.predict(img)
+                index = word_to_id[str(pred_class)]
                 if str(pred_class) in filename:
                     prediction = 'True'
                     count_true += 1
-                    index = word_to_id[pred_class]
                     matrix[index, index] += 1
                 else:
                     prediction = 'False'
                     count_false += 1
-                    matrix[word_to_id[filename], word_to_id[pred_class]] += 1
+                    for lab in labels:
+                        if filename.startswith(lab):
+                            outdex=word_to_id[lab]
+                            matrix[outdex, index] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
                 plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
             print('\n')
@@ -201,16 +202,8 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         f.write(' indir: {}\n model: {}\n valid_pct: {}\n l_lr: {}\n u_lr: {}\n aug: {}\n epochs: {}\n bs: {}\n dropout: {}\n wd: {}\n imagenet: {}\n test_path: {}\n\n'.format(indir, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropout, wd, imagenet, test_path))
         f.write('\nFinal Training Results\n\n')
         f.write('Accuracy:\t\t {:0.4f}\n'.format(acc_valid))
-        f.write('Precision:\t {:0.4f}\n'.format(pre))
-        f.write('Recall:\t\t {:0.4f}\n'.format(rec))
-        f.write('True Positives:\t\t {}\n'.format(cm[0,0]))
-        f.write('False Positives:\t\t {}\n'.format(cm[0,1]))
-        f.write('False Negatives:\t\t {}\n'.format(cm[1,0]))
-        f.write('True Negatives:\t\t {}\n'.format(cm[1,1]))
+        f.write('Training Loss:\t\t {:0.4f}\n'.format(t_loss))
+        f.write('Validation Loss:\t\t {:0.4f}\n'.format(v_loss))
         f.write('\nAccuracy on the test set:\t {}\n'.format(acc_test))
         f.close()
-        interp.plot_confusion_matrix(return_fig=False)
-        plt.tight_layout()
-        plt.savefig(home_dir+'/celldeath/'+'Validation_confusion_matrix_'+timestr+'.pdf')
-
 

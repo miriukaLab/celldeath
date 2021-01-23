@@ -30,7 +30,8 @@ def plot_confusion_matrix(cm, dir,
                           normalize=True):
     import matplotlib.pyplot as plt  
     import itertools
-
+    import time
+    timestr = time.strftime("%Y%m%d-%H%M%S")
     accuracy = np.trace(cm) / float(np.sum(cm))
     misclass = 1 - accuracy
 
@@ -67,3 +68,16 @@ def plot_confusion_matrix(cm, dir,
     plt.ylabel('True label')
     plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
     plt.savefig(dir+'/celldeath/'+'Test_confusion_matrix_'+timestr+'.pdf')
+
+
+def extractMax(csv):
+    '''Extract values from csv file and store as variables'''
+    import pandas as pd
+    import numpy
+    data = pd.read_csv(csv)
+    data_max=data[data['accuracy']==data['accuracy'].max()]
+    acc,tloss,vloss=(data_max['accuracy'],data_max['train_loss'],data_max['valid_loss'])
+    acc=acc.values[0]
+    tloss=tloss.values[0]
+    vloss=vloss.values[0]
+    return acc,tloss,vloss
