@@ -64,9 +64,11 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         interp = ClassificationInterpretation.from_learner(learn)
         print('\n')
         
-        for filename in os.listdir(home_dir+'/celldeath/'):
+        directory=home_dir+'/celldeath/'
+        for filename in os.listdir(directory):
             if filename.startswith('history'):
-                acc_valid,t_loss,v_loss=extractMax()
+                file=os.path.join(directory, filename)
+                acc_valid,t_loss,v_loss=extractMax(file)
         
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
@@ -104,7 +106,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                             outdex=word_to_id[lab]
                             matrix[outdex, index] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
-                plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
+            plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
@@ -153,9 +155,11 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
         interp = ClassificationInterpretation.from_learner(learn)
         print('\n')
         
-        for filename in os.listdir(home_dir+'/celldeath/'):
+        directory=home_dir+'/celldeath/'
+        for filename in os.listdir(directory):
             if filename.startswith('history'):
-                acc_valid,t_loss,v_loss=extractMax()
+                file=os.path.join(directory, filename)
+                acc_valid,t_loss,v_loss=extractMax(file)
         
         interp.plot_confusion_matrix(return_fig=False)
         plt.tight_layout()
@@ -193,7 +197,7 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                             outdex=word_to_id[lab]
                             matrix[outdex, index] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
-                plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
+            plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))

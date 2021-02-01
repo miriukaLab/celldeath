@@ -38,7 +38,7 @@ def plot_confusion_matrix(cm, dir,
     if cmap is None:
         cmap = plt.get_cmap('Blues')
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(8, 8))
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.colorbar()
