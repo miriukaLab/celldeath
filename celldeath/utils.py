@@ -65,6 +65,7 @@ def plot_confusion_matrix(cm, dir,
 
 
     plt.tight_layout()
+    plt.ylims([1.5, -0.5])
     plt.ylabel('True label')
     plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
     plt.savefig(dir+'/celldeath/'+'Test_confusion_matrix_'+timestr+'.pdf')
