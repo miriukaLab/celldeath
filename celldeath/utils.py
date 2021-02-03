@@ -45,7 +45,7 @@ def plot_confusion_matrix(cm, dir,
 
     if target_names is not None:
         tick_marks = np.arange(len(target_names))
-        plt.xticks(tick_marks, target_names, rotation=45)
+        plt.xticks(tick_marks, target_names, rotation=90)
         plt.yticks(tick_marks, target_names)
 
     if normalize:
@@ -65,7 +65,13 @@ def plot_confusion_matrix(cm, dir,
 
 
     plt.tight_layout()
-    plt.ylims([1.5, -0.5])
+    if len(target_names) == 2:
+        plt.ylim([1.5, -0.5])
+    elif len(target_names) == 14:
+        plt.ylim([13.5, -0.5])
+    else:
+        pass
+
     plt.ylabel('True label')
     plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
     plt.savefig(dir+'/celldeath/'+'Test_confusion_matrix_'+timestr+'.pdf')

@@ -102,11 +102,13 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                     prediction = 'False'
                     count_false += 1
                     for lab in labels:
-                        if filename.startswith(lab):
+                        if lab in filename:
                             outdex=word_to_id[lab]
                             matrix[outdex, index] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
-            plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
+            matrix=matrix.astype(int)
+            target_names=word_to_id.keys()
+            plot_confusion_matrix(matrix,home_dir,target_names,normalize=False)
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
@@ -197,7 +199,9 @@ def trainer(indir, labels, model, valid_pct, l_lr, u_lr, aug, epochs, bs, dropou
                             outdex=word_to_id[lab]
                             matrix[outdex, index] += 1
                 print('Image {}\tpredicts to\t{}\t{}'.format(filename, pred_class, prediction))
-            plot_confusion_matrix(matrix,home_dir,labels,normalize=False)
+            matrix=matrix.astype(int)
+            target_names=word_to_id.keys()
+            plot_confusion_matrix(matrix,home_dir,target_names,normalize=False)
             print('\n')
             acc_test = count_true/(count_true+count_false)  
             print('Accuracy for test images:\t {}\n'.format(acc_test))
