@@ -15,7 +15,7 @@ def newest(path):
 def predictor(path_pred):
     '''
     Predict on given images. 
-    Put your images in a folder calles 'predict', and this should be a subfolder 
+    Put your images in a folder called 'predict', and this should be a subfolder 
     of the indir folder used to train.  
     '''
     count_true = 0

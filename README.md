@@ -174,7 +174,7 @@ In addition, four plots will be saved in this directory:
 
 ### PREDICT 
 
-After training, you can predict the presence of cell death in a set of images by using the *predict* option. Your images should be placed in a subfolder inside the training folder (*indir* from training subcommand).
+After training, you can predict the presence of cell death in a set of images by using the *predict* option. By default, the trained model is saved inside 'models' directory within *indir*, so your images could for example be placed in a subfolder inside the training folder called 'predict'. Thus:
 
 #### Example  
 
@@ -192,7 +192,7 @@ command | description
 &nbsp;
 ## Version
 
-0.9.17
+1.0.0
 
 &nbsp;
 ## Authors
@@ -203,7 +203,7 @@ command | description
 
 ## More info and citation
 
-https://www.biorxiv.org/content/10.1101/2020.03.22.002253v2
+https://www.biorxiv.org/content/10.1101/2020.03.22.002253
 
 ## License
 
@@ -212,4 +212,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 * Meli and Shei.
+* FLENI
 * the fastai team.

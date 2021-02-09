@@ -10,17 +10,19 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
      name='celldeath',
-     version='0.9.17',
+     version='1.0.0',
      author='Santiago Miriuka, Alejandro La Greca, Nelba Pérez',
      author_email='smiriuka@fleni.org.ar, ale.lagreca@gmail.com, nelbap@hotmail.com',
      description='A tool to identify cell death based on deep learning',
      long_description=long_description, 
      long_description_content_type='text/markdown', 
-     url='https://github.com/sgmiriuka/celldeath', 
+     url='https://github.com/miriukaLab/celldeath', 
      packages=setuptools.find_packages(),
      install_requires=['fastai>=1.0.60',
                          'image-slicer==0.3.0',
-                         'matplotlib>=3.1.1'], 
+                         'matplotlib>=3.1.1',
+                         'torch==1.4',
+                         'torchvision==0.5.0'], 
      entry_points={
                     'console_scripts': [
                     'celldeath = celldeath.main:main']
