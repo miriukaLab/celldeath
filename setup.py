@@ -10,7 +10,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
      name='celldeath',
-     version='1.0.0',
+     version='v1.0.0',
      author='Santiago Miriuka, Alejandro La Greca, Nelba Pérez',
      author_email='smiriuka@fleni.org.ar, ale.lagreca@gmail.com, nelbap@hotmail.com',
      description='A tool to identify cell death based on deep learning',
