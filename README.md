@@ -203,7 +203,7 @@ command | description
 
 ## More info and citation
 
-https://www.biorxiv.org/content/10.1101/2020.03.22.002253
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0253666
 
 ## License
 
