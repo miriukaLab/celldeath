@@ -21,7 +21,7 @@ setuptools.setup(
      install_requires=['fastai>=1.0.60',
                          'image-slicer==0.3.0',
                          'matplotlib>=3.1.1',
-                         'torch==1.4',
+                         'torch==2.2.0',
                          'torchvision==0.5.0'], 
      entry_points={
                     'console_scripts': [
